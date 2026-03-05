@@ -1,0 +1,107 @@
+"use client"
+
+import * as React from "react"
+import { cn } from "@/lib/utils"
+
+interface TabsContextValue {
+  activeTab: string
+  setActiveTab: (value: string) => void
+}
+
+const TabsContext = React.createContext<TabsContextValue>({
+  activeTab: "",
+  setActiveTab: () => {},
+})
+
+interface TabsProps extends React.HTMLAttributes<HTMLDivElement> {
+  defaultValue: string
+  value?: string
+  onValueChange?: (value: string) => void
+}
+
+const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
+  ({ defaultValue, value, onValueChange, className, children, ...props }, ref) => {
+    const [internalValue, setInternalValue] = React.useState(defaultValue)
+    const activeTab = value ?? internalValue
+    const setActiveTab = React.useCallback(
+      (v: string) => {
+        setInternalValue(v)
+        onValueChange?.(v)
+      },
+      [onValueChange]
+    )
+
+    return (
+      <TabsContext.Provider value={{ activeTab, setActiveTab }}>
+        <div ref={ref} className={cn("", className)} {...props}>
+          {children}
+        </div>
+      </TabsContext.Provider>
+    )
+  }
+)
+Tabs.displayName = "Tabs"
+
+const TabsList = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "inline-flex h-auto items-center justify-center rounded-xl bg-slate-800/60 p-1.5 text-slate-400",
+      className
+    )}
+    {...props}
+  />
+))
+TabsList.displayName = "TabsList"
+
+interface TabsTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  value: string
+}
+
+const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
+  ({ className, value, ...props }, ref) => {
+    const { activeTab, setActiveTab } = React.useContext(TabsContext)
+    const isActive = activeTab === value
+
+    return (
+      <button
+        ref={ref}
+        className={cn(
+          "inline-flex items-center justify-center whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 disabled:pointer-events-none disabled:opacity-50",
+          isActive
+            ? "bg-slate-900 text-white shadow-lg"
+            : "text-slate-400 hover:text-slate-200 hover:bg-slate-700/50",
+          className
+        )}
+        onClick={() => setActiveTab(value)}
+        {...props}
+      />
+    )
+  }
+)
+TabsTrigger.displayName = "TabsTrigger"
+
+interface TabsContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  value: string
+}
+
+const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
+  ({ className, value, ...props }, ref) => {
+    const { activeTab } = React.useContext(TabsContext)
+    if (activeTab !== value) return null
+
+    return (
+      <div
+        ref={ref}
+        className={cn("mt-4 focus-visible:outline-none", className)}
+        {...props}
+      />
+    )
+  }
+)
+TabsContent.displayName = "TabsContent"
+
+export { Tabs, TabsList, TabsTrigger, TabsContent }
