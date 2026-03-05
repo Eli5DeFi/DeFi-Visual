@@ -15,7 +15,7 @@ const concepts: ConceptSection[] = [
     title: "What is an AMM?",
     icon: "🔄",
     content: (
-      <div className="space-y-3 text-slate-300 text-sm leading-relaxed">
+      <div className="space-y-3 text-[#a7d3c0] text-sm leading-relaxed">
         <p>
           An <strong className="text-white">Automated Market Maker (AMM)</strong> is a decentralized
           exchange protocol that uses a mathematical formula to price assets instead of using an order
@@ -33,13 +33,13 @@ const concepts: ConceptSection[] = [
     title: "The Constant Product Formula",
     icon: "📐",
     content: (
-      <div className="space-y-3 text-slate-300 text-sm leading-relaxed">
-        <div className="bg-slate-950 rounded-lg p-4 text-center font-mono text-lg text-blue-400">
+      <div className="space-y-3 text-[#a7d3c0] text-sm leading-relaxed">
+        <div className="bg-[#030712] rounded-lg p-4 text-center font-mono text-lg text-teal-400">
           x × y = k
         </div>
         <p>
           The core invariant: the product of both token reserves must remain constant. When you buy
-          token Y, you add token X to the pool — and since <code className="text-blue-400">k</code>{" "}
+          token Y, you add token X to the pool — and since <code className="text-teal-400">k</code>{" "}
           must stay the same, the pool gives you token Y.
         </p>
         <p>
@@ -53,21 +53,21 @@ const concepts: ConceptSection[] = [
     title: "Impermanent Loss Explained",
     icon: "📉",
     content: (
-      <div className="space-y-3 text-slate-300 text-sm leading-relaxed">
+      <div className="space-y-3 text-[#a7d3c0] text-sm leading-relaxed">
         <p>
           <strong className="text-white">Impermanent Loss (IL)</strong> is the difference between
           holding tokens in a liquidity pool vs. simply holding them in your wallet.
         </p>
-        <div className="bg-slate-950 rounded-lg p-4 font-mono text-sm text-center">
-          <span className="text-yellow-400">IL = (2√r / (1+r)) - 1</span>
+        <div className="bg-[#030712] rounded-lg p-4 font-mono text-sm text-center">
+          <span className="text-amber-400">IL = (2√r / (1+r)) - 1</span>
           <br />
-          <span className="text-slate-500 text-xs">where r = new_price / initial_price</span>
+          <span className="text-[#3b6b6b] text-xs">where r = new_price / initial_price</span>
         </div>
         <ul className="space-y-1 ml-4">
-          <li className="text-slate-400">• 1.25x price change → 0.6% loss</li>
-          <li className="text-slate-400">• 1.50x price change → 2.0% loss</li>
-          <li className="text-slate-400">• 2x price change → 5.7% loss</li>
-          <li className="text-slate-400">• 5x price change → 25.5% loss</li>
+          <li className="text-[#6b8a99]">• 1.25x price change → 0.6% loss</li>
+          <li className="text-[#6b8a99]">• 1.50x price change → 2.0% loss</li>
+          <li className="text-[#6b8a99]">• 2x price change → 5.7% loss</li>
+          <li className="text-[#6b8a99]">• 5x price change → 25.5% loss</li>
         </ul>
         <p>
           It&apos;s called &ldquo;impermanent&rdquo; because if the price returns to its original value, the
@@ -80,7 +80,7 @@ const concepts: ConceptSection[] = [
     title: "Price Impact & Slippage",
     icon: "💥",
     content: (
-      <div className="space-y-3 text-slate-300 text-sm leading-relaxed">
+      <div className="space-y-3 text-[#a7d3c0] text-sm leading-relaxed">
         <p>
           <strong className="text-white">Price Impact</strong> measures how much your trade moves the
           pool&apos;s price. Larger trades relative to pool size cause bigger price impacts.
@@ -103,11 +103,12 @@ export default function ConceptExplainer() {
       {concepts.map((concept, index) => (
         <div
           key={index}
-          className="border border-slate-800 rounded-xl overflow-hidden bg-slate-900/50"
+          className="border border-[#132d30] rounded-xl overflow-hidden bg-[#071115]/50"
         >
           <button
             onClick={() => setOpenIndex(openIndex === index ? null : index)}
-            className="w-full flex items-center justify-between p-4 hover:bg-slate-800/50 transition-colors"
+            aria-expanded={openIndex === index}
+            className="w-full flex items-center justify-between p-4 hover:bg-[#0f1d24]/50 transition-colors"
           >
             <div className="flex items-center gap-3">
               <span className="text-xl">{concept.icon}</span>
@@ -117,7 +118,7 @@ export default function ConceptExplainer() {
               animate={{ rotate: openIndex === index ? 180 : 0 }}
               transition={{ duration: 0.2 }}
             >
-              <ChevronDown className="w-5 h-5 text-slate-400" />
+              <ChevronDown className="w-5 h-5 text-[#6b8a99]" />
             </motion.div>
           </button>
           <AnimatePresence>

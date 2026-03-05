@@ -12,6 +12,7 @@ import {
   simulateOverTime,
   compareStrategies,
 } from "@/lib/pendleEngine"
+import { CHART_MARGIN, CHART_GRID, CHART_AXIS, CHART_TICK, CHART_TOOLTIP_STYLE } from "@/lib/constants"
 import {
   LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, ReferenceLine, ReferenceDot, Legend,
@@ -31,8 +32,8 @@ function PriceTooltip({ active, payload }: {
   if (!active || !payload?.length) return null
   const day = payload[0].payload.day
   return (
-    <div className="bg-[#0a0a1a] border border-indigo-900/40 rounded-lg px-3 py-2 text-xs space-y-1">
-      <div className="text-slate-500 font-mono">Day {day}</div>
+    <div className="bg-[#071115] border border-teal-900/40 rounded-lg px-3 py-2 text-xs space-y-1">
+      <div className="text-[#6b8a99] font-mono">Day {day}</div>
       {payload.map((p, i) => (
         <div key={i} style={{ color: p.color }}>
           {p.name}: <span className="font-mono">{p.value.toFixed(4)}</span>
@@ -49,8 +50,8 @@ function StrategyTooltip({ active, payload }: {
   if (!active || !payload?.length) return null
   const day = payload[0].payload.day
   return (
-    <div className="bg-[#0a0a1a] border border-indigo-900/40 rounded-lg px-3 py-2 text-xs space-y-1">
-      <div className="text-slate-500 font-mono">Day {day}</div>
+    <div className="bg-[#071115] border border-teal-900/40 rounded-lg px-3 py-2 text-xs space-y-1">
+      <div className="text-[#6b8a99] font-mono">Day {day}</div>
       {payload.map((p, i) => (
         <div key={i} style={{ color: p.color }}>
           {p.name}: <span className="font-mono">{(p.value * 100).toFixed(2)}%</span>
@@ -80,19 +81,19 @@ function TokenSplitViz({
     <div className="space-y-5">
       {/* SY deposit */}
       <div className="relative">
-        <div className="bg-indigo-950/30 border border-indigo-800/40 rounded-xl p-4">
+        <div className="bg-teal-950/30 border border-teal-800/40 rounded-xl p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-indigo-600/20 border border-indigo-500/30
-                flex items-center justify-center text-sm font-bold text-indigo-400">SY</div>
+              <div className="w-10 h-10 rounded-full bg-teal-600/20 border border-teal-500/30
+                flex items-center justify-center text-sm font-bold text-teal-400">SY</div>
               <div>
-                <div className="text-sm font-semibold text-indigo-300">SY-stETH</div>
-                <div className="text-xs text-slate-500">Standardized Yield Token</div>
+                <div className="text-sm font-semibold text-teal-300">SY-stETH</div>
+                <div className="text-xs text-[#6b8a99]">Standardized Yield Token</div>
               </div>
             </div>
             <div className="text-right">
               <div className="text-xl font-mono font-bold text-white">{syAmount}</div>
-              <div className="text-xs text-slate-500">= {(syAmount * exchangeRate).toFixed(1)} ETH underlying</div>
+              <div className="text-xs text-[#6b8a99]">= {(syAmount * exchangeRate).toFixed(1)} ETH underlying</div>
             </div>
           </div>
         </div>
@@ -100,11 +101,11 @@ function TokenSplitViz({
 
       {/* Arrow */}
       <div className="flex flex-col items-center gap-1">
-        <div className="text-xs text-indigo-600 font-mono">YIELD TOKENIZE</div>
+        <div className="text-xs text-teal-600 font-mono">YIELD TOKENIZE</div>
         <div className="flex items-center gap-2">
-          <div className="w-px h-4 bg-indigo-800/60" />
-          <ArrowRight className="w-3 h-3 text-indigo-600 rotate-90" />
-          <div className="w-px h-4 bg-indigo-800/60" />
+          <div className="w-px h-4 bg-teal-800/60" />
+          <ArrowRight className="w-3 h-3 text-teal-600 rotate-90" />
+          <div className="w-px h-4 bg-teal-800/60" />
         </div>
       </div>
 
@@ -118,29 +119,29 @@ function TokenSplitViz({
           transition={{ delay: 0.15 }}
         >
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-8 h-8 rounded-full bg-cyan-600/20 border border-cyan-500/30
+            <div className="w-8 h-8 rounded-full bg-teal-600/20 border border-teal-500/30
               flex items-center justify-center text-xs font-bold text-cyan-400">PT</div>
             <div>
               <div className="text-sm font-semibold text-cyan-300">Principal Token</div>
-              <div className="text-[10px] text-slate-500">Zero-coupon bond</div>
+              <div className="text-[10px] text-[#6b8a99]">Zero-coupon bond</div>
             </div>
           </div>
           <div className="space-y-2">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-500">Minted</span>
+              <span className="text-[#6b8a99]">Minted</span>
               <span className="font-mono text-white">{ptMinted.toFixed(1)}</span>
             </div>
             <div className="flex justify-between text-xs">
-              <span className="text-slate-500">Price</span>
+              <span className="text-[#6b8a99]">Price</span>
               <span className="font-mono text-cyan-400">{ptPrice.toFixed(4)} ETH</span>
             </div>
             <div className="flex justify-between text-xs">
-              <span className="text-slate-500">At Maturity</span>
+              <span className="text-[#6b8a99]">At Maturity</span>
               <span className="font-mono text-emerald-400">1.0000 ETH</span>
             </div>
           </div>
           {/* Visual bar */}
-          <div className="mt-3 h-2 bg-slate-800 rounded-full overflow-hidden">
+          <div className="mt-3 h-2 bg-[#0f1d24] rounded-full overflow-hidden">
             <motion.div
               className="h-full bg-gradient-to-r from-cyan-600 to-cyan-400 rounded-full"
               initial={{ width: 0 }}
@@ -148,7 +149,7 @@ function TokenSplitViz({
               transition={{ duration: 0.6, delay: 0.2 }}
             />
           </div>
-          <div className="text-[10px] text-slate-600 mt-1 text-right">{(ptPrice * 100).toFixed(1)}% of underlying</div>
+          <div className="text-[10px] text-[#3b6b6b] mt-1 text-right">{(ptPrice * 100).toFixed(1)}% of underlying</div>
         </motion.div>
 
         {/* YT */}
@@ -163,25 +164,25 @@ function TokenSplitViz({
               flex items-center justify-center text-xs font-bold text-amber-400">YT</div>
             <div>
               <div className="text-sm font-semibold text-amber-300">Yield Token</div>
-              <div className="text-[10px] text-slate-500">Yield claim until expiry</div>
+              <div className="text-[10px] text-[#6b8a99]">Yield claim until expiry</div>
             </div>
           </div>
           <div className="space-y-2">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-500">Minted</span>
+              <span className="text-[#6b8a99]">Minted</span>
               <span className="font-mono text-white">{ytMinted.toFixed(1)}</span>
             </div>
             <div className="flex justify-between text-xs">
-              <span className="text-slate-500">Price</span>
+              <span className="text-[#6b8a99]">Price</span>
               <span className="font-mono text-amber-400">{ytPrice.toFixed(4)} ETH</span>
             </div>
             <div className="flex justify-between text-xs">
-              <span className="text-slate-500">At Maturity</span>
+              <span className="text-[#6b8a99]">At Maturity</span>
               <span className="font-mono text-rose-400">0.0000 ETH</span>
             </div>
           </div>
           {/* Visual bar */}
-          <div className="mt-3 h-2 bg-slate-800 rounded-full overflow-hidden">
+          <div className="mt-3 h-2 bg-[#0f1d24] rounded-full overflow-hidden">
             <motion.div
               className="h-full bg-gradient-to-r from-amber-600 to-amber-400 rounded-full"
               initial={{ width: 0 }}
@@ -189,18 +190,18 @@ function TokenSplitViz({
               transition={{ duration: 0.6, delay: 0.3 }}
             />
           </div>
-          <div className="text-[10px] text-slate-600 mt-1 text-right">{(ytPrice * 100).toFixed(1)}% of underlying</div>
+          <div className="text-[10px] text-[#3b6b6b] mt-1 text-right">{(ytPrice * 100).toFixed(1)}% of underlying</div>
         </motion.div>
       </div>
 
       {/* Invariant check */}
       <div className="flex items-center justify-center gap-3 text-xs">
         <span className="font-mono text-cyan-400">{ptPrice.toFixed(4)}</span>
-        <span className="text-slate-600">+</span>
+        <span className="text-[#3b6b6b]">+</span>
         <span className="font-mono text-amber-400">{ytPrice.toFixed(4)}</span>
-        <span className="text-slate-600">=</span>
+        <span className="text-[#3b6b6b]">=</span>
         <span className="font-mono text-emerald-400">{(ptPrice + ytPrice).toFixed(4)}</span>
-        <span className="text-slate-500">≈ 1.0 underlying</span>
+        <span className="text-[#6b8a99]">&asymp; 1.0 underlying</span>
       </div>
     </div>
   )
@@ -231,19 +232,19 @@ function PendleExplainer() {
   return (
     <div className="space-y-2">
       {LEARN_SECTIONS.map((s, i) => (
-        <div key={i} className="border border-[#1a1a35] rounded-lg overflow-hidden">
+        <div key={i} className="border border-[#132d30] rounded-lg overflow-hidden">
           <button
-            className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-[#111128]/60 transition-colors"
+            className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-[#0f1d24]/60 transition-colors"
             onClick={() => setOpen(open === i ? null : i)}
           >
-            <span className="text-sm font-medium text-slate-300">{s.title}</span>
-            {open === i ? <ChevronUp className="w-4 h-4 text-indigo-400" /> : <ChevronDown className="w-4 h-4 text-slate-600" />}
+            <span className="text-sm font-medium text-[#a7d3c0]">{s.title}</span>
+            {open === i ? <ChevronUp className="w-4 h-4 text-teal-400" /> : <ChevronDown className="w-4 h-4 text-[#3b6b6b]" />}
           </button>
           {open === i && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
-              className="px-4 pb-3 text-sm text-slate-400 leading-relaxed"
+              className="px-4 pb-3 text-sm text-[#6b8a99] leading-relaxed"
             >
               {s.body}
             </motion.div>
@@ -290,10 +291,10 @@ export default function PendleSimulator() {
       {/* ── Left: Visualizations ── */}
       <div className="lg:col-span-2 space-y-6">
         {/* Token split viz */}
-        <Card className="bg-[#0a0a1a]/80 border-[#1a1a35] backdrop-blur">
+        <Card className="bg-[#071115]/80 border-[#132d30] backdrop-blur">
           <CardHeader className="pb-3">
             <CardTitle className="text-white flex items-center gap-2 text-base">
-              <div className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" />
+              <div className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
               Yield Tokenization: SY → PT + YT
             </CardTitle>
           </CardHeader>
@@ -310,7 +311,7 @@ export default function PendleSimulator() {
         </Card>
 
         {/* Charts */}
-        <Card className="bg-[#0a0a1a]/80 border-[#1a1a35] backdrop-blur">
+        <Card className="bg-[#071115]/80 border-[#132d30] backdrop-blur">
           <CardContent className="p-4">
             <Tabs defaultValue="prices">
               <TabsList className="w-full grid grid-cols-3">
@@ -323,19 +324,19 @@ export default function PendleSimulator() {
               <TabsContent value="prices">
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="h-[300px] pt-4">
                   <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={timeSeries} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#1a1a35" />
-                      <XAxis dataKey="day" stroke="#4a5080" tick={{ fontSize: 10, fill: "#4a5080" }}
+                    <LineChart data={timeSeries} margin={CHART_MARGIN}>
+                      <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} />
+                      <XAxis dataKey="day" stroke={CHART_AXIS} tick={CHART_TICK}
                         tickFormatter={v => `D${v}`} />
-                      <YAxis stroke="#4a5080" tick={{ fontSize: 10, fill: "#4a5080" }}
+                      <YAxis stroke={CHART_AXIS} tick={CHART_TICK}
                         domain={[0, 1.05]} tickFormatter={v => v.toFixed(2)} />
                       <Tooltip content={<PriceTooltip />} />
-                      <ReferenceLine y={1} stroke="#334155" strokeDasharray="4 4" label={{ value: "1.0 (par)", fill: "#334155", fontSize: 10 }} />
+                      <ReferenceLine y={1} stroke="#132d30" strokeDasharray="4 4" label={{ value: "1.0 (par)", fill: "#3b6b6b", fontSize: 10 }} />
                       <Line type="monotone" dataKey="ptPrice" name="PT Price" stroke="#06b6d4"
                         strokeWidth={2.5} dot={false} />
                       <Line type="monotone" dataKey="ytPrice" name="YT Price" stroke="#f59e0b"
                         strokeWidth={2.5} dot={false} />
-                      <Legend iconType="line" wrapperStyle={{ fontSize: 11, color: "#7986a8" }} />
+                      <Legend iconType="line" wrapperStyle={{ fontSize: 11, color: "#6b8a99" }} />
                     </LineChart>
                   </ResponsiveContainer>
                 </motion.div>
@@ -345,7 +346,7 @@ export default function PendleSimulator() {
               <TabsContent value="strategy">
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="h-[300px] pt-4">
                   <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={timeSeries} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                    <AreaChart data={timeSeries} margin={CHART_MARGIN}>
                       <defs>
                         <linearGradient id="ptGrad" x1="0" y1="0" x2="0" y2="1">
                           <stop offset="0%" stopColor="#06b6d4" stopOpacity={0.2} />
@@ -356,18 +357,18 @@ export default function PendleSimulator() {
                           <stop offset="100%" stopColor="#f59e0b" stopOpacity={0} />
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#1a1a35" />
-                      <XAxis dataKey="day" stroke="#4a5080" tick={{ fontSize: 10, fill: "#4a5080" }}
+                      <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} />
+                      <XAxis dataKey="day" stroke={CHART_AXIS} tick={CHART_TICK}
                         tickFormatter={v => `D${v}`} />
-                      <YAxis stroke="#4a5080" tick={{ fontSize: 10, fill: "#4a5080" }}
+                      <YAxis stroke={CHART_AXIS} tick={CHART_TICK}
                         tickFormatter={v => `${(v * 100).toFixed(0)}%`} />
                       <Tooltip content={<StrategyTooltip />} />
-                      <ReferenceLine y={1} stroke="#334155" strokeDasharray="4 4" />
+                      <ReferenceLine y={1} stroke="#132d30" strokeDasharray="4 4" />
                       <Area type="monotone" dataKey="ptTotalValue" name="PT (Fixed Yield)" stroke="#06b6d4"
                         strokeWidth={2} fill="url(#ptGrad)" dot={false} />
                       <Area type="monotone" dataKey="ytTotalValue" name="YT (Variable Yield)" stroke="#f59e0b"
                         strokeWidth={2} fill="url(#ytGrad)" dot={false} />
-                      <Legend iconType="line" wrapperStyle={{ fontSize: 11, color: "#7986a8" }} />
+                      <Legend iconType="line" wrapperStyle={{ fontSize: 11, color: "#6b8a99" }} />
                     </AreaChart>
                   </ResponsiveContainer>
                 </motion.div>
@@ -376,7 +377,7 @@ export default function PendleSimulator() {
               {/* Strategy breakdown table */}
               <TabsContent value="breakdown">
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-3">
-                  <div className="text-xs text-slate-500 mb-3 text-center">$1,000 investment comparison at current market rates</div>
+                  <div className="text-xs text-[#6b8a99] mb-3 text-center">$1,000 investment comparison at current market rates</div>
                   <div className="grid grid-cols-2 gap-4">
                     {/* PT strategy */}
                     <div className="bg-cyan-950/15 border border-cyan-900/30 rounded-xl p-4 space-y-3">
@@ -392,7 +393,7 @@ export default function PendleSimulator() {
                         ["ROI", `+${strategy.ptROI}%`],
                       ].map(([l, v], i) => (
                         <div key={i} className="flex justify-between text-xs">
-                          <span className="text-slate-500">{l}</span>
+                          <span className="text-[#6b8a99]">{l}</span>
                           <span className={`font-mono ${i >= 3 ? "text-emerald-400" : "text-white"}`}>{v}</span>
                         </div>
                       ))}
@@ -413,7 +414,7 @@ export default function PendleSimulator() {
                         ["ROI", `${strategy.ytROI >= 0 ? "+" : ""}${strategy.ytROI}%`],
                       ].map(([l, v], i) => (
                         <div key={i} className="flex justify-between text-xs">
-                          <span className="text-slate-500">{l}</span>
+                          <span className="text-[#6b8a99]">{l}</span>
                           <span className={`font-mono ${i >= 3 ? (strategy.ytExpectedReturn >= 0 ? "text-emerald-400" : "text-rose-400") : "text-white"}`}>{v}</span>
                         </div>
                       ))}
@@ -432,15 +433,15 @@ export default function PendleSimulator() {
       {/* ── Right: Controls ── */}
       <div className="space-y-6">
         {/* Market controls */}
-        <Card className="bg-[#0a0a1a]/80 border-[#1a1a35] backdrop-blur">
+        <Card className="bg-[#071115]/80 border-[#132d30] backdrop-blur">
           <CardContent className="p-6 space-y-6">
             <h3 className="text-base font-semibold text-white">Market Parameters</h3>
 
             {/* Implied APY */}
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
-                <span className="text-slate-400">Implied APY</span>
-                <span className="font-mono text-indigo-400 text-base">{(impliedAPY * 100).toFixed(1)}%</span>
+                <span className="text-[#6b8a99]">Implied APY</span>
+                <span className="font-mono text-teal-400 text-base">{(impliedAPY * 100).toFixed(1)}%</span>
               </div>
               <Slider
                 value={[impliedAPY * 100]}
@@ -450,7 +451,7 @@ export default function PendleSimulator() {
               <div className="flex gap-1.5">
                 {[3, 5, 8, 15].map(v => (
                   <button key={v} onClick={() => setImpliedAPY(v / 100)}
-                    className="flex-1 text-xs py-1.5 rounded-md bg-[#111128] hover:bg-[#1a1a35] text-slate-400 hover:text-slate-200 transition-colors border border-[#1a1a35]">
+                    className="qbtn">
                     {v}%
                   </button>
                 ))}
@@ -460,7 +461,7 @@ export default function PendleSimulator() {
             {/* Underlying APY */}
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
-                <span className="text-slate-400">Underlying APY (actual)</span>
+                <span className="text-[#6b8a99]">Underlying APY (actual)</span>
                 <span className="font-mono text-emerald-400 text-base">{(underlyingAPY * 100).toFixed(1)}%</span>
               </div>
               <Slider
@@ -471,7 +472,7 @@ export default function PendleSimulator() {
               <div className="flex gap-1.5">
                 {[2, 5, 10, 20].map(v => (
                   <button key={v} onClick={() => setUnderlyingAPY(v / 100)}
-                    className="flex-1 text-xs py-1.5 rounded-md bg-[#111128] hover:bg-[#1a1a35] text-slate-400 hover:text-slate-200 transition-colors border border-[#1a1a35]">
+                    className="qbtn">
                     {v}%
                   </button>
                 ))}
@@ -481,7 +482,7 @@ export default function PendleSimulator() {
             {/* Maturity days */}
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
-                <span className="text-slate-400">Days to Maturity</span>
+                <span className="text-[#6b8a99]">Days to Maturity</span>
                 <span className="font-mono text-white text-base">{maturityDays}d</span>
               </div>
               <Slider
@@ -492,7 +493,7 @@ export default function PendleSimulator() {
               <div className="flex gap-1.5">
                 {[30, 90, 180, 365].map(v => (
                   <button key={v} onClick={() => setMaturityDays(v)}
-                    className="flex-1 text-xs py-1.5 rounded-md bg-[#111128] hover:bg-[#1a1a35] text-slate-400 hover:text-slate-200 transition-colors border border-[#1a1a35]">
+                    className="qbtn">
                     {v}d
                   </button>
                 ))}
@@ -502,7 +503,7 @@ export default function PendleSimulator() {
             {/* SY amount */}
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
-                <span className="text-slate-400">SY Amount</span>
+                <span className="text-[#6b8a99]">SY Amount</span>
                 <span className="font-mono text-white text-base">{syAmount} SY</span>
               </div>
               <Slider
@@ -515,8 +516,8 @@ export default function PendleSimulator() {
             {/* Exchange rate */}
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
-                <span className="text-slate-400">SY Exchange Rate</span>
-                <span className="font-mono text-violet-400 text-base">{exchangeRate.toFixed(2)}</span>
+                <span className="text-[#6b8a99]">SY Exchange Rate</span>
+                <span className="font-mono text-cyan-400 text-base">{exchangeRate.toFixed(2)}</span>
               </div>
               <Slider
                 value={[exchangeRate * 100]}
@@ -528,7 +529,7 @@ export default function PendleSimulator() {
         </Card>
 
         {/* Pricing dashboard */}
-        <Card className="bg-[#0a0a1a]/80 border-[#1a1a35] backdrop-blur">
+        <Card className="bg-[#071115]/80 border-[#132d30] backdrop-blur">
           <CardContent className="p-6 space-y-4">
             <h3 className="text-base font-semibold text-white">Live Pricing</h3>
 
@@ -537,26 +538,26 @@ export default function PendleSimulator() {
               <div className="bg-cyan-950/20 border border-cyan-900/30 rounded-lg p-3 text-center">
                 <div className="text-[10px] text-cyan-700 uppercase tracking-wider">PT Price</div>
                 <div className="text-lg font-mono font-bold text-cyan-400">{pricing.ptPrice.toFixed(4)}</div>
-                <div className="text-[10px] text-slate-600">ETH per PT</div>
+                <div className="text-[10px] text-[#3b6b6b]">ETH per PT</div>
               </div>
               {/* YT price */}
               <div className="bg-amber-950/20 border border-amber-900/30 rounded-lg p-3 text-center">
                 <div className="text-[10px] text-amber-700 uppercase tracking-wider">YT Price</div>
                 <div className="text-lg font-mono font-bold text-amber-400">{pricing.ytPrice.toFixed(4)}</div>
-                <div className="text-[10px] text-slate-600">ETH per YT</div>
+                <div className="text-[10px] text-[#3b6b6b]">ETH per YT</div>
               </div>
             </div>
 
             <div className="space-y-2">
               {[
                 ["Fixed APY (buy PT)", `${(pricing.fixedAPY * 100).toFixed(2)}%`, "text-cyan-400"],
-                ["Implied APY", `${(pricing.impliedAPY * 100).toFixed(2)}%`, "text-indigo-400"],
+                ["Implied APY", `${(pricing.impliedAPY * 100).toFixed(2)}%`, "text-teal-400"],
                 ["Underlying APY", `${(underlyingAPY * 100).toFixed(2)}%`, "text-emerald-400"],
-                ["PT Discount", `${fixedYieldPct.toFixed(2)}%`, "text-violet-400"],
+                ["PT Discount", `${fixedYieldPct.toFixed(2)}%`, "text-cyan-400"],
                 ["YT Leverage", `${(1 / pricing.ytPrice).toFixed(1)}×`, "text-amber-400"],
               ].map(([label, value, color], i) => (
-                <div key={i} className="flex justify-between text-sm py-1.5 border-b border-[#1a1a35] last:border-0">
-                  <span className="text-slate-500">{label}</span>
+                <div key={i} className="flex justify-between text-sm py-1.5 border-b border-[#132d30] last:border-0">
+                  <span className="text-[#6b8a99]">{label}</span>
                   <span className={`font-mono font-semibold ${color}`}>{value}</span>
                 </div>
               ))}
@@ -586,7 +587,7 @@ export default function PendleSimulator() {
         </Card>
 
         {/* Explainer */}
-        <Card className="bg-[#0a0a1a]/80 border-[#1a1a35] backdrop-blur">
+        <Card className="bg-[#071115]/80 border-[#132d30] backdrop-blur">
           <CardHeader className="pb-2">
             <CardTitle className="text-white text-base">How Pendle Works</CardTitle>
           </CardHeader>

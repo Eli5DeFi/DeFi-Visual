@@ -48,8 +48,9 @@ const TabsList = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
+    role="tablist"
     className={cn(
-      "inline-flex h-auto items-center justify-center rounded-xl bg-slate-800/60 p-1.5 text-slate-400",
+      "inline-flex h-auto items-center justify-center rounded-xl bg-[#0f1d24] p-1.5 text-[#6b8a99]",
       className
     )}
     {...props}
@@ -69,11 +70,14 @@ const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
     return (
       <button
         ref={ref}
+        role="tab"
+        aria-selected={isActive}
+        tabIndex={isActive ? 0 : -1}
         className={cn(
-          "inline-flex items-center justify-center whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 disabled:pointer-events-none disabled:opacity-50",
+          "inline-flex items-center justify-center whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 disabled:pointer-events-none disabled:opacity-50",
           isActive
-            ? "bg-slate-900 text-white shadow-lg"
-            : "text-slate-400 hover:text-slate-200 hover:bg-slate-700/50",
+            ? "bg-[#071115] text-white shadow-lg shadow-teal-900/20"
+            : "text-[#6b8a99] hover:text-[#d1fae5] hover:bg-[#132d30]/60",
           className
         )}
         onClick={() => setActiveTab(value)}
@@ -96,6 +100,7 @@ const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
     return (
       <div
         ref={ref}
+        role="tabpanel"
         className={cn("mt-4 focus-visible:outline-none", className)}
         {...props}
       />

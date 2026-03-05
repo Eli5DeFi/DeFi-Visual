@@ -13,73 +13,65 @@ import {
   ReferenceDot,
 } from "recharts"
 import { generateILCurve } from "@/lib/mathEngine"
+import { CHART_MARGIN, CHART_GRID, CHART_AXIS, CHART_TICK, CHART_TOOLTIP_STYLE, CHART_LABEL } from "@/lib/constants"
 
 interface ILChartProps {
   currentPriceChange: number
   currentIL: number
 }
 
-export default function ILChart({ currentPriceChange, currentIL }: ILChartProps) {
+function ILChart({ currentPriceChange, currentIL }: ILChartProps) {
   const data = useMemo(() => generateILCurve(), [])
 
   return (
     <div className="w-full h-full">
       <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={data} margin={{ top: 10, right: 20, bottom: 20, left: 20 }}>
+        <AreaChart data={data} margin={CHART_MARGIN}>
           <defs>
             <linearGradient id="ilGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#ef4444" stopOpacity={0.3} />
-              <stop offset="100%" stopColor="#ef4444" stopOpacity={0} />
+              <stop offset="0%" stopColor="#f43f5e" stopOpacity={0.3} />
+              <stop offset="100%" stopColor="#f43f5e" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+          <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} />
           <XAxis
             dataKey="priceChange"
-            stroke="#475569"
-            fontSize={11}
+            stroke={CHART_AXIS}
+            tick={CHART_TICK}
             label={{
               value: "Price Change %",
               position: "bottom",
               offset: 5,
-              fill: "#64748b",
-              fontSize: 11,
+              ...CHART_LABEL,
             }}
             tickFormatter={(v: number) => `${v}%`}
           />
           <YAxis
-            stroke="#475569"
-            fontSize={11}
+            stroke={CHART_AXIS}
+            tick={CHART_TICK}
             label={{
               value: "Impermanent Loss %",
               angle: -90,
               position: "insideLeft",
               offset: 10,
-              fill: "#64748b",
-              fontSize: 11,
+              ...CHART_LABEL,
             }}
             tickFormatter={(v: number) => `${v.toFixed(1)}%`}
           />
           <Tooltip
-            contentStyle={{
-              backgroundColor: "#0f172a",
-              border: "1px solid #1e293b",
-              borderRadius: "8px",
-              fontSize: "12px",
-            }}
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            formatter={(value: any) => [`${Number(value).toFixed(3)}%`, "IL"]}
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            labelFormatter={(v: any) => `Price Change: ${v}%`}
+            contentStyle={CHART_TOOLTIP_STYLE}
+            formatter={((value: number, name: string) => [`${Number(value).toFixed(3)}%`, "IL"]) as never}
+            labelFormatter={((v: number) => `Price Change: ${v}%`) as never}
           />
           <Area
             type="monotone"
             dataKey="il"
-            stroke="#ef4444"
+            stroke="#f43f5e"
             strokeWidth={2}
             fill="url(#ilGradient)"
             isAnimationActive={false}
           />
-          <ReferenceLine x={0} stroke="#475569" strokeDasharray="3 3" />
+          <ReferenceLine x={0} stroke="#3b6b6b" strokeDasharray="3 3" />
           {Math.abs(currentPriceChange) > 0.1 && (
             <ReferenceDot
               x={Math.round(currentPriceChange / 5) * 5}
@@ -95,3 +87,5 @@ export default function ILChart({ currentPriceChange, currentIL }: ILChartProps)
     </div>
   )
 }
+
+export default React.memo(ILChart)
