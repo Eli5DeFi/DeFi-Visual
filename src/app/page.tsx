@@ -6,6 +6,9 @@ import AMMSimulator from "@/components/amm/AMMSimulator"
 import MEVSimulator from "@/components/mev/MEVSimulator"
 import FlashLoanSimulator from "@/components/flashloan/FlashLoanSimulator"
 import PendleSimulator from "@/components/pendle/PendleSimulator"
+import APYSimulator from "@/components/apy/APYSimulator"
+import FundingRateSimulator from "@/components/funding/FundingRateSimulator"
+import ComposabilitySimulator from "@/components/composability/ComposabilitySimulator"
 
 /* ── Tabs ── */
 const TABS = [
@@ -40,6 +43,30 @@ const TABS = [
     badge: "NEW",
     badgeColor: "text-cyan-400 bg-cyan-950/60 border-cyan-900/50",
     accent: "#22d3ee",
+  },
+  {
+    id: "apy",
+    label: "APY Calculator",
+    icon: <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none"><path d="M2 14V8l3-2v8M7 14V5l3-3v12M12 14V7l2-1v8" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+    badge: "NEW",
+    badgeColor: "text-emerald-400 bg-emerald-950/60 border-emerald-900/50",
+    accent: "#22c55e",
+  },
+  {
+    id: "funding",
+    label: "Funding & OI",
+    icon: <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M8 2v12" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><circle cx="4" cy="5" r="1.5" stroke="currentColor" strokeWidth="1.2"/><circle cx="12" cy="11" r="1.5" stroke="currentColor" strokeWidth="1.2"/></svg>,
+    badge: "NEW",
+    badgeColor: "text-purple-400 bg-purple-950/60 border-purple-900/50",
+    accent: "#a855f7",
+  },
+  {
+    id: "composability",
+    label: "Money Legos",
+    icon: <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none"><rect x="2" y="9" width="5" height="5" rx="0.5" stroke="currentColor" strokeWidth="1.2"/><rect x="9" y="9" width="5" height="5" rx="0.5" stroke="currentColor" strokeWidth="1.2"/><rect x="5.5" y="2" width="5" height="5" rx="0.5" stroke="currentColor" strokeWidth="1.2"/></svg>,
+    badge: "NEW",
+    badgeColor: "text-amber-400 bg-amber-950/60 border-amber-900/50",
+    accent: "#f59e0b",
   },
 ] as const
 
@@ -160,6 +187,9 @@ export default function Home() {
             {activeTab === "mev" && <MEVSimulator />}
             {activeTab === "flashloan" && <FlashLoanSimulator />}
             {activeTab === "pendle" && <PendleSimulator />}
+            {activeTab === "apy" && <APYSimulator />}
+            {activeTab === "funding" && <FundingRateSimulator />}
+            {activeTab === "composability" && <ComposabilitySimulator />}
           </motion.div>
         </AnimatePresence>
       </main>
