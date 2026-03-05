@@ -4,6 +4,7 @@ import React from "react"
 import { motion } from "framer-motion"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import AMMSimulator from "@/components/amm/AMMSimulator"
+import MEVSimulator from "@/components/mev/MEVSimulator"
 
 export default function Home() {
   return (
@@ -53,6 +54,9 @@ export default function Home() {
             <TabsTrigger value="amm" className="gap-2">
               <span className="hidden sm:inline">&#x1f504;</span> Anatomy of AMMs &amp; Impermanent Loss
             </TabsTrigger>
+            <TabsTrigger value="mev" className="gap-2">
+              <span className="hidden sm:inline">&#x1f96a;</span> MEV &amp; Sandwich Attacks
+            </TabsTrigger>
             <TabsTrigger value="coming-soon-1" className="gap-2 opacity-50 cursor-not-allowed" disabled>
               <span className="hidden sm:inline">&#x1f3e6;</span> Lending &amp; Borrowing
             </TabsTrigger>
@@ -68,6 +72,16 @@ export default function Home() {
               transition={{ duration: 0.4, delay: 0.2 }}
             >
               <AMMSimulator />
+            </motion.div>
+          </TabsContent>
+
+          <TabsContent value="mev">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+            >
+              <MEVSimulator />
             </motion.div>
           </TabsContent>
         </Tabs>
