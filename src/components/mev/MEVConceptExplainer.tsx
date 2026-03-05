@@ -15,7 +15,7 @@ const concepts: ConceptSection[] = [
     title: "The Dark Forest (Mempool)",
     icon: "\u{1F332}",
     content: (
-      <div className="space-y-3 text-slate-300 text-sm leading-relaxed">
+      <div className="space-y-3 text-[#a7d3c0] text-sm leading-relaxed">
         <p>
           Before a transaction becomes permanent on the blockchain, it sits in the{" "}
           <strong className="text-white">Mempool</strong> — a public waiting room of pending,
@@ -25,7 +25,7 @@ const concepts: ConceptSection[] = [
           Every swap you submit broadcasts its parameters in plain text: input token, output token,
           slippage tolerance. This visibility is what makes MEV extraction possible.
         </p>
-        <div className="bg-slate-950 rounded-lg p-3 text-center font-mono text-xs text-red-400">
+        <div className="bg-[#030712] rounded-lg p-3 text-center font-mono text-xs text-rose-400">
           Your pending tx is visible to everyone
         </div>
       </div>
@@ -35,7 +35,7 @@ const concepts: ConceptSection[] = [
     title: "Searchers (The Predators)",
     icon: "\u{1F916}",
     content: (
-      <div className="space-y-3 text-slate-300 text-sm leading-relaxed">
+      <div className="space-y-3 text-[#a7d3c0] text-sm leading-relaxed">
         <p>
           <strong className="text-white">Searchers</strong> are highly optimized bots that scan
           the Mempool 24/7. When they spot a large, vulnerable AMM trade, they simulate the math,
@@ -52,19 +52,19 @@ const concepts: ConceptSection[] = [
     title: "The Sandwich Attack",
     icon: "\u{1F96A}",
     content: (
-      <div className="space-y-3 text-slate-300 text-sm leading-relaxed">
+      <div className="space-y-3 text-[#a7d3c0] text-sm leading-relaxed">
         <p>Three trades are executed in precise order within one block:</p>
         <div className="space-y-2">
-          <div className="bg-red-950/50 border border-red-800/30 rounded p-2">
-            <strong className="text-red-400">1. Front-Run:</strong> Attacker buys ETH before you,
+          <div className="bg-rose-950/40 border border-rose-800/30 rounded p-2">
+            <strong className="text-rose-400">1. Front-Run:</strong> Attacker buys ETH before you,
             pushing the price up.
           </div>
-          <div className="bg-blue-950/50 border border-blue-800/30 rounded p-2">
-            <strong className="text-blue-400">2. Your Trade:</strong> Executes at the inflated
+          <div className="bg-cyan-950/40 border border-cyan-800/30 rounded p-2">
+            <strong className="text-cyan-400">2. Your Trade:</strong> Executes at the inflated
             price, pushing it even higher.
           </div>
-          <div className="bg-red-950/50 border border-red-800/30 rounded p-2">
-            <strong className="text-red-400">3. Back-Run:</strong> Attacker sells at the inflated
+          <div className="bg-rose-950/40 border border-rose-800/30 rounded p-2">
+            <strong className="text-rose-400">3. Back-Run:</strong> Attacker sells at the inflated
             price, pocketing the difference.
           </div>
         </div>
@@ -75,21 +75,21 @@ const concepts: ConceptSection[] = [
     title: "How to Protect Yourself",
     icon: "\u{1F6E1}\u{FE0F}",
     content: (
-      <div className="space-y-3 text-slate-300 text-sm leading-relaxed">
+      <div className="space-y-3 text-[#a7d3c0] text-sm leading-relaxed">
         <ul className="space-y-2 ml-1">
-          <li className="text-slate-400">
+          <li className="text-[#6b8a99]">
             <strong className="text-white">Low slippage tolerance:</strong> Set it as low as possible (0.1-0.5%).
             Less room for extraction = less profit for attackers.
           </li>
-          <li className="text-slate-400">
+          <li className="text-[#6b8a99]">
             <strong className="text-white">Private mempools:</strong> Services like Flashbots Protect
             send your tx directly to block builders, bypassing the public mempool.
           </li>
-          <li className="text-slate-400">
+          <li className="text-[#6b8a99]">
             <strong className="text-white">Smaller trades:</strong> Split large swaps into smaller
             ones to reduce price impact and MEV opportunity.
           </li>
-          <li className="text-slate-400">
+          <li className="text-[#6b8a99]">
             <strong className="text-white">MEV-aware DEXs:</strong> Some DEXs (like CoW Swap) batch
             trades to prevent sandwich attacks entirely.
           </li>
@@ -107,11 +107,11 @@ export default function MEVConceptExplainer() {
       {concepts.map((concept, index) => (
         <div
           key={index}
-          className="border border-slate-800 rounded-xl overflow-hidden bg-slate-900/50"
+          className="border border-[#132d30] rounded-xl overflow-hidden bg-[#071115]/50"
         >
           <button
             onClick={() => setOpenIndex(openIndex === index ? null : index)}
-            className="w-full flex items-center justify-between p-4 hover:bg-slate-800/50 transition-colors"
+            className="w-full flex items-center justify-between p-4 hover:bg-[#0f1d24]/50 transition-colors"
           >
             <div className="flex items-center gap-3">
               <span className="text-xl">{concept.icon}</span>
@@ -121,7 +121,7 @@ export default function MEVConceptExplainer() {
               animate={{ rotate: openIndex === index ? 180 : 0 }}
               transition={{ duration: 0.2 }}
             >
-              <ChevronDown className="w-5 h-5 text-slate-400" />
+              <ChevronDown className="w-5 h-5 text-[#6b8a99]" />
             </motion.div>
           </button>
           <AnimatePresence>

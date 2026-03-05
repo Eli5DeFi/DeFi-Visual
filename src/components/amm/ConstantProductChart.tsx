@@ -12,13 +12,14 @@ import {
   ReferenceDot,
 } from "recharts"
 import { getConstantProductCurve, PoolState } from "@/lib/mathEngine"
+import { CHART_MARGIN, CHART_GRID, CHART_AXIS, CHART_TICK, CHART_TOOLTIP_STYLE } from "@/lib/constants"
 
 interface ConstantProductChartProps {
   pool: PoolState
   initialState: PoolState
 }
 
-export default function ConstantProductChart({
+function ConstantProductChart({
   pool,
   initialState,
 }: ConstantProductChartProps) {
@@ -43,32 +44,32 @@ export default function ConstantProductChart({
   return (
     <div className="w-full h-full">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={mergedData} margin={{ top: 10, right: 20, bottom: 20, left: 20 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+        <LineChart data={mergedData} margin={CHART_MARGIN}>
+          <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} />
           <XAxis
             dataKey="x"
             type="number"
             domain={["auto", "auto"]}
-            stroke="#475569"
-            fontSize={11}
+            stroke={CHART_AXIS}
+            tick={CHART_TICK}
             label={{
               value: "Token X (ETH)",
               position: "bottom",
               offset: 5,
-              fill: "#64748b",
+              fill: "#6b8a99",
               fontSize: 11,
             }}
             tickFormatter={(v: number) => v.toFixed(1)}
           />
           <YAxis
-            stroke="#475569"
-            fontSize={11}
+            stroke={CHART_AXIS}
+            tick={CHART_TICK}
             label={{
               value: "Token Y (USDC)",
               angle: -90,
               position: "insideLeft",
               offset: 10,
-              fill: "#64748b",
+              fill: "#6b8a99",
               fontSize: 11,
             }}
             tickFormatter={(v: number) =>
@@ -76,25 +77,18 @@ export default function ConstantProductChart({
             }
           />
           <Tooltip
-            contentStyle={{
-              backgroundColor: "#0f172a",
-              border: "1px solid #1e293b",
-              borderRadius: "8px",
-              fontSize: "12px",
-            }}
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            formatter={(value: any, name: any) => [
+            contentStyle={CHART_TOOLTIP_STYLE}
+            formatter={((value: number | undefined, name: string | undefined) => [
               value != null ? Number(value).toFixed(2) : "0",
               name === "current" ? "Current Curve" : "Initial Curve",
-            ]}
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            labelFormatter={(v: any) => `ETH: ${Number(v).toFixed(2)}`}
+            ]) as never}
+            labelFormatter={((v: number) => `ETH: ${Number(v).toFixed(2)}`) as never}
           />
           {/* Initial curve (faded) */}
           <Line
             type="monotone"
             dataKey="initial"
-            stroke="#475569"
+            stroke="#3b6b6b"
             strokeWidth={1}
             strokeDasharray="4 4"
             dot={false}
@@ -104,7 +98,7 @@ export default function ConstantProductChart({
           <Line
             type="monotone"
             dataKey="current"
-            stroke="#8b5cf6"
+            stroke="#14b8a6"
             strokeWidth={2}
             dot={false}
             isAnimationActive={true}
@@ -124,8 +118,8 @@ export default function ConstantProductChart({
             x={initialState.tokenX}
             y={initialState.tokenY}
             r={4}
-            fill="#475569"
-            stroke="#475569"
+            fill="#3b6b6b"
+            stroke="#3b6b6b"
             strokeWidth={2}
           />
         </LineChart>
@@ -133,3 +127,5 @@ export default function ConstantProductChart({
     </div>
   )
 }
+
+export default React.memo(ConstantProductChart)

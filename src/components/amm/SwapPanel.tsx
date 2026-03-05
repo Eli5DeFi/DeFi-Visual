@@ -49,6 +49,7 @@ export default function SwapPanel({
         <Button
           variant="outline"
           size="sm"
+          aria-label="Toggle swap direction"
           onClick={() => {
             setDirection(isXtoY ? "y-to-x" : "x-to-y")
             setSwapAmount(isXtoY ? 500 : 1)
@@ -63,7 +64,7 @@ export default function SwapPanel({
       {/* Amount slider */}
       <div className="space-y-3">
         <div className="flex items-center justify-between text-sm">
-          <span className="text-slate-400">{fromToken} Amount</span>
+          <span className="text-[#6b8a99]">{fromToken} Amount</span>
           <span className="font-mono text-white text-lg">
             {swapAmount.toFixed(isXtoY ? 1 : 0)} {fromToken}
           </span>
@@ -81,7 +82,7 @@ export default function SwapPanel({
             <button
               key={pct}
               onClick={() => setSwapAmount(Math.max(step, maxAmount * pct))}
-              className="flex-1 text-xs py-1.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors"
+              className="flex-1 text-xs py-1.5 rounded-md bg-[#0f1d24] hover:bg-[#132d30] text-[#a7d3c0] transition-colors"
             >
               {pct * 100}%
             </button>
@@ -91,39 +92,39 @@ export default function SwapPanel({
 
       {/* Preview */}
       <motion.div
-        className="bg-slate-950/80 border border-slate-800 rounded-lg p-4 space-y-2"
+        className="bg-[#030712]/80 border border-[#132d30] rounded-lg p-4 space-y-2"
         initial={false}
-        animate={{ borderColor: preview.priceImpact > 5 ? "#dc2626" : "#1e293b" }}
+        animate={{ borderColor: preview.priceImpact > 5 ? "#dc2626" : "#132d30" }}
       >
         <div className="flex justify-between text-sm">
-          <span className="text-slate-400">Expected Output</span>
+          <span className="text-[#6b8a99]">Expected Output</span>
           <span className="text-white font-mono">
             +{isXtoY ? preview.amountOut.toFixed(2) : preview.amountOut.toFixed(6)} {toToken}
           </span>
         </div>
         <div className="flex justify-between text-sm">
-          <span className="text-slate-400">Price Impact</span>
+          <span className="text-[#6b8a99]">Price Impact</span>
           <span
             className={
               preview.priceImpact > 5
-                ? "text-red-400 font-mono"
+                ? "text-rose-400 font-mono"
                 : preview.priceImpact > 1
-                ? "text-yellow-400 font-mono"
-                : "text-green-400 font-mono"
+                ? "text-amber-400 font-mono"
+                : "text-emerald-400 font-mono"
             }
           >
             {preview.priceImpact.toFixed(3)}%
           </span>
         </div>
         <div className="flex justify-between text-sm">
-          <span className="text-slate-400">New Price</span>
+          <span className="text-[#6b8a99]">New Price</span>
           <span className="text-white font-mono">
             ${preview.newPrice.toFixed(2)}
           </span>
         </div>
         <div className="flex justify-between text-sm">
-          <span className="text-slate-400">Fee ({(feeRate * 100).toFixed(1)}%)</span>
-          <span className="text-green-400 font-mono">
+          <span className="text-[#6b8a99]">Fee ({(feeRate * 100).toFixed(1)}%)</span>
+          <span className="text-emerald-400 font-mono">
             ${preview.feeEarned.toFixed(2)}
           </span>
         </div>
@@ -132,7 +133,7 @@ export default function SwapPanel({
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
-            className="text-xs text-red-400 bg-red-950/50 rounded p-2 mt-2"
+            className="text-xs text-rose-400 bg-rose-950/40 rounded p-2 mt-2"
           >
             High price impact! This trade moves the price significantly.
           </motion.div>
@@ -143,7 +144,7 @@ export default function SwapPanel({
       <div>
         <button
           onClick={() => setShowAdvanced(!showAdvanced)}
-          className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
+          className="text-xs text-[#3b6b6b] hover:text-[#a7d3c0] transition-colors"
         >
           {showAdvanced ? "Hide" : "Show"} Advanced Settings
         </button>
@@ -154,7 +155,7 @@ export default function SwapPanel({
             className="mt-3 space-y-2"
           >
             <div className="flex items-center justify-between text-sm">
-              <span className="text-slate-400">Fee Rate</span>
+              <span className="text-[#6b8a99]">Fee Rate</span>
               <span className="font-mono text-white">{(feeRate * 100).toFixed(1)}%</span>
             </div>
             <Slider
@@ -170,7 +171,7 @@ export default function SwapPanel({
 
       {/* Action buttons */}
       <div className="flex gap-3">
-        <Button onClick={onSwap} className="flex-1 bg-blue-600 hover:bg-blue-500 h-12 text-base">
+        <Button onClick={onSwap} className="flex-1 bg-teal-600 hover:bg-teal-500 h-12 text-base">
           Execute Swap
         </Button>
         <Button onClick={onReset} variant="outline" className="h-12">

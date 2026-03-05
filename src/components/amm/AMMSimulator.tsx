@@ -68,10 +68,10 @@ export default function AMMSimulator() {
       {/* Left column: Visualizations */}
       <div className="lg:col-span-2 space-y-6">
         {/* Pool Visualizer */}
-        <Card className="bg-slate-900/80 border-slate-800 backdrop-blur">
+        <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-white flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+              <div className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" />
               Liquidity Pool
             </CardTitle>
           </CardHeader>
@@ -87,7 +87,7 @@ export default function AMMSimulator() {
         </Card>
 
         {/* Charts in tabs */}
-        <Card className="bg-slate-900/80 border-slate-800 backdrop-blur">
+        <Card>
           <CardContent className="p-4">
             <Tabs defaultValue="curve">
               <TabsList className="w-full grid grid-cols-2">
@@ -98,7 +98,7 @@ export default function AMMSimulator() {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="h-[300px]"
+                  className="h-[250px] sm:h-[300px]"
                 >
                   <ConstantProductChart
                     pool={pool}
@@ -110,7 +110,7 @@ export default function AMMSimulator() {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="h-[300px]"
+                  className="h-[250px] sm:h-[300px]"
                 >
                   <ILChart
                     currentPriceChange={currentPriceChange}
@@ -126,7 +126,7 @@ export default function AMMSimulator() {
       {/* Right column: Controls and Education */}
       <div className="space-y-6">
         {/* Swap Panel */}
-        <Card className="bg-slate-900/80 border-slate-800 backdrop-blur">
+        <Card>
           <CardContent className="p-6">
             <SwapPanel
               preview={preview}
@@ -145,7 +145,7 @@ export default function AMMSimulator() {
         </Card>
 
         {/* Concept Explainer */}
-        <Card className="bg-slate-900/80 border-slate-800 backdrop-blur">
+        <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-white text-base">
               Learn the Concepts

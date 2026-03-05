@@ -9,10 +9,10 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "default", size = "default", ...props }, ref) => {
     const variants = {
-      default: "bg-blue-600 text-white hover:bg-blue-500 shadow",
-      outline: "border border-slate-600 bg-transparent hover:bg-slate-800 text-slate-200",
-      ghost: "hover:bg-slate-800 text-slate-200",
-      destructive: "bg-red-600 text-white hover:bg-red-500",
+      default: "bg-teal-600 text-white hover:bg-teal-500 shadow",
+      outline: "border border-[#132d30] bg-transparent hover:bg-[#0f1d24] text-[#d1fae5]",
+      ghost: "hover:bg-[#0f1d24] text-[#d1fae5]",
+      destructive: "bg-rose-600 text-white hover:bg-rose-500",
     }
     const sizes = {
       default: "h-10 px-4 py-2",
@@ -24,7 +24,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         className={cn(
-          "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-400 disabled:pointer-events-none disabled:opacity-50",
+          "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#030712] disabled:pointer-events-none disabled:opacity-50",
           variants[variant],
           sizes[size],
           className

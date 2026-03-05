@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { calculateFlashLoan, FlashLoanResult } from "@/lib/flashLoanEngine"
 import { PoolState } from "@/lib/mathEngine"
+import { CHART_MARGIN, CHART_GRID, CHART_AXIS, CHART_TICK, CHART_TOOLTIP_STYLE } from "@/lib/constants"
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, ReferenceLine, ReferenceDot,
@@ -41,8 +42,8 @@ function ProfitTooltip({ active, payload }: { active?: boolean; payload?: Array<
   if (!active || !payload?.length) return null
   const { value } = payload[0]
   return (
-    <div className="bg-[#0a0a1a] border border-indigo-900/40 rounded-lg px-3 py-2 text-xs">
-      <div className="text-slate-400">Borrow: <span className="text-white font-mono">${payload[0].payload.amount}k USDC</span></div>
+    <div className="bg-[#071115] border border-teal-900/40 rounded-lg px-3 py-2 text-xs">
+      <div className="text-[#6b8a99]">Borrow: <span className="text-white font-mono">${payload[0].payload.amount}k USDC</span></div>
       <div className={value >= 0 ? "text-emerald-400" : "text-rose-400"}>
         Profit: <span className="font-mono">{value >= 0 ? "+" : ""}${value.toFixed(2)}</span>
       </div>
@@ -63,28 +64,28 @@ function ProfitCurveChart({
   const currentProfit = data.find(d => d.amount === currentAmount)?.profit ?? 0
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+      <AreaChart data={data} margin={CHART_MARGIN}>
         <defs>
           <linearGradient id="profitGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#10b981" stopOpacity={0.25} />
-            <stop offset="100%" stopColor="#10b981" stopOpacity={0} />
+            <stop offset="0%" stopColor="#14b8a6" stopOpacity={0.25} />
+            <stop offset="100%" stopColor="#14b8a6" stopOpacity={0} />
           </linearGradient>
           <linearGradient id="lossGrad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#f43f5e" stopOpacity={0.2} />
             <stop offset="100%" stopColor="#f43f5e" stopOpacity={0} />
           </linearGradient>
         </defs>
-        <CartesianGrid strokeDasharray="3 3" stroke="#1a1a35" />
-        <XAxis dataKey="amount" stroke="#4a5080" tick={{ fontSize: 10, fill: "#4a5080" }}
+        <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} />
+        <XAxis dataKey="amount" stroke={CHART_AXIS} tick={CHART_TICK}
           tickFormatter={v => `${v}k`} />
-        <YAxis stroke="#4a5080" tick={{ fontSize: 10, fill: "#4a5080" }}
+        <YAxis stroke={CHART_AXIS} tick={CHART_TICK}
           tickFormatter={v => `$${v.toFixed(0)}`} />
         <Tooltip content={<ProfitTooltip />} />
         <ReferenceLine y={0} stroke="#334155" strokeDasharray="4 4" />
-        <ReferenceLine x={optimalAmount} stroke="#8b5cf6" strokeDasharray="4 4"
-          label={{ value: "Optimal", fill: "#8b5cf6", fontSize: 10, position: "top" }} />
-        <ReferenceDot x={currentAmount} y={currentProfit} r={5} fill="#6366f1" stroke="#0a0a1a" strokeWidth={2} />
-        <Area type="monotone" dataKey="profit" stroke="#10b981" strokeWidth={2}
+        <ReferenceLine x={optimalAmount} stroke="#22d3ee" strokeDasharray="4 4"
+          label={{ value: "Optimal", fill: "#22d3ee", fontSize: 10, position: "top" }} />
+        <ReferenceDot x={currentAmount} y={currentProfit} r={5} fill="#14b8a6" stroke="#071115" strokeWidth={2} />
+        <Area type="monotone" dataKey="profit" stroke="#14b8a6" strokeWidth={2}
           fill="url(#profitGrad)" dot={false} />
       </AreaChart>
     </ResponsiveContainer>
@@ -94,16 +95,15 @@ function ProfitCurveChart({
 /* ── Atomic flow diagram ── */
 const FLOW_STEPS = [
   { num: 1, label: "Aave Flash Loan", color: "cyan" },
-  { num: 2, label: "Buy ETH on Uniswap", color: "blue" },
-  { num: 3, label: "Sell ETH on SushiSwap", color: "purple" },
+  { num: 2, label: "Buy ETH on Uniswap", color: "teal" },
+  { num: 3, label: "Sell ETH on SushiSwap", color: "amber" },
   { num: 4, label: "Repay Aave + Fee", color: "amber" },
   { num: 5, label: "Capture Profit", color: "result" },
 ]
 
 const colorMap: Record<string, { bg: string; border: string; text: string; dot: string }> = {
   cyan:   { bg: "bg-cyan-950/30",    border: "border-cyan-800/40",    text: "text-cyan-300",    dot: "bg-cyan-400" },
-  blue:   { bg: "bg-blue-950/30",    border: "border-blue-800/40",    text: "text-blue-300",    dot: "bg-blue-400" },
-  purple: { bg: "bg-purple-950/30",  border: "border-purple-800/40",  text: "text-purple-300",  dot: "bg-purple-400" },
+  teal:   { bg: "bg-teal-950/30",    border: "border-teal-800/40",    text: "text-teal-300",    dot: "bg-teal-400" },
   amber:  { bg: "bg-amber-950/20",   border: "border-amber-800/40",   text: "text-amber-300",   dot: "bg-amber-400" },
   green:  { bg: "bg-emerald-950/30", border: "border-emerald-800/40", text: "text-emerald-300", dot: "bg-emerald-400" },
   red:    { bg: "bg-rose-950/30",    border: "border-rose-800/40",    text: "text-rose-300",    dot: "bg-rose-400" },
@@ -136,30 +136,30 @@ function FlowDiagram({
   return (
     <div className="relative">
       {/* Atomic block border */}
-      <div className="absolute inset-0 border border-dashed border-indigo-900/40 rounded-xl pointer-events-none" />
-      <div className="absolute top-2 right-3 text-[10px] text-indigo-700 font-mono">⬡ BLOCK N — ATOMIC TX</div>
+      <div className="absolute inset-0 border border-dashed border-teal-900/40 rounded-xl pointer-events-none" />
+      <div className="absolute top-2 right-3 text-[10px] text-teal-700 font-mono">⬡ BLOCK N — ATOMIC TX</div>
 
       <div className="p-4 pt-6 space-y-1.5">
         {steps.map((step, i) => {
           const isActive = phase >= step.num
           const isLast = i === steps.length - 1
-          const c = colorMap[step.color] ?? colorMap.blue
+          const c = colorMap[step.color] ?? colorMap.teal
           return (
             <div key={step.num}>
               <motion.div
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg border transition-colors ${
-                  isActive ? `${c.bg} ${c.border}` : "bg-slate-900/20 border-slate-800/30"
+                  isActive ? `${c.bg} ${c.border}` : "bg-[#0f1d24]/20 border-[#132d30]/30"
                 }`}
                 animate={{ opacity: isActive ? 1 : 0.35 }}
                 transition={{ duration: 0.4 }}
               >
                 <div className={`w-6 h-6 rounded-full shrink-0 flex items-center justify-center text-[11px] font-bold
-                  ${isActive ? "bg-indigo-900/60 text-indigo-300" : "bg-slate-800 text-slate-600"}`}>
+                  ${isActive ? "bg-teal-900/60 text-teal-300" : "bg-[#0f1d24] text-[#3b6b6b]"}`}>
                   {step.num}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className={`text-sm font-semibold ${isActive ? c.text : "text-slate-600"}`}>{step.label}</div>
-                  <div className="text-xs text-slate-500 truncate">{step.detail}</div>
+                  <div className={`text-sm font-semibold ${isActive ? c.text : "text-[#3b6b6b]"}`}>{step.label}</div>
+                  <div className="text-xs text-[#6b8a99] truncate">{step.detail}</div>
                 </div>
                 {phase === step.num && !isLast && (
                   <div className={`w-1.5 h-1.5 rounded-full ${c.dot} animate-pulse`} />
@@ -170,7 +170,7 @@ function FlowDiagram({
               </motion.div>
               {i < steps.length - 1 && (
                 <div className="flex justify-center h-3 items-center">
-                  <div className={`w-px h-full ${phase > step.num ? "bg-indigo-800/60" : "bg-slate-800/40"}`} />
+                  <div className={`w-px h-full ${phase > step.num ? "bg-teal-800/60" : "bg-[#132d30]/40"}`} />
                 </div>
               )}
             </div>
@@ -187,17 +187,17 @@ function StepBreakdown({ result }: { result: FlashLoanResult }) {
     { label: "Borrowed from Aave", value: `$${result.borrowAmount.toLocaleString()}`, color: "text-cyan-400" },
     { label: "Flash Loan Fee (0.09%)", value: `-$${(result.repaymentRequired - result.borrowAmount).toFixed(2)}`, color: "text-amber-400" },
     { label: "Must Repay Aave", value: `$${result.repaymentRequired.toFixed(2)}`, color: "text-white" },
-    { label: "ETH Bought on Uniswap", value: `${result.ethFromUni.toFixed(6)} ETH`, color: "text-blue-400" },
-    { label: "USDC from SushiSwap", value: `$${result.usdcFromSushi.toFixed(2)}`, color: "text-purple-400" },
+    { label: "ETH Bought on Uniswap", value: `${result.ethFromUni.toFixed(6)} ETH`, color: "text-teal-400" },
+    { label: "USDC from SushiSwap", value: `$${result.usdcFromSushi.toFixed(2)}`, color: "text-amber-400" },
     { label: "Net Profit / Loss", value: `${result.profit >= 0 ? "+" : ""}$${result.profit.toFixed(2)}`, color: result.profit >= 0 ? "text-emerald-400" : "text-rose-400" },
   ]
   return (
     <div className="space-y-2 py-3">
       {rows.map(({ label, value, color }, i) => (
         <div key={i} className={`flex justify-between items-center py-2 px-3 rounded-lg ${
-          i === rows.length - 1 ? "bg-indigo-950/30 border border-indigo-900/30" : "border-b border-slate-800/50"
+          i === rows.length - 1 ? "bg-teal-950/30 border border-teal-900/30" : "border-b border-[#132d30]/50"
         }`}>
-          <span className="text-sm text-slate-400">{label}</span>
+          <span className="text-sm text-[#6b8a99]">{label}</span>
           <span className={`font-mono text-sm font-semibold ${color}`}>{value}</span>
         </div>
       ))}
@@ -230,19 +230,19 @@ function FlashLoanExplainer() {
   return (
     <div className="space-y-2">
       {LEARN_SECTIONS.map((s, i) => (
-        <div key={i} className="border border-slate-800 rounded-lg overflow-hidden">
+        <div key={i} className="border border-[#132d30] rounded-lg overflow-hidden">
           <button
-            className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-slate-800/40 transition-colors"
+            className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-[#0f1d24]/40 transition-colors"
             onClick={() => setOpen(open === i ? null : i)}
           >
-            <span className="text-sm font-medium text-slate-300">{s.title}</span>
-            {open === i ? <ChevronUp className="w-4 h-4 text-indigo-400" /> : <ChevronDown className="w-4 h-4 text-slate-500" />}
+            <span className="text-sm font-medium text-[#a7d3c0]">{s.title}</span>
+            {open === i ? <ChevronUp className="w-4 h-4 text-teal-400" /> : <ChevronDown className="w-4 h-4 text-[#3b6b6b]" />}
           </button>
           {open === i && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
-              className="px-4 pb-3 text-sm text-slate-400 leading-relaxed"
+              className="px-4 pb-3 text-sm text-[#6b8a99] leading-relaxed"
             >
               {s.body}
             </motion.div>
@@ -302,7 +302,7 @@ export default function FlashLoanSimulator() {
       {/* ── Left: Visualizations ── */}
       <div className="lg:col-span-2 space-y-6">
         {/* Pool comparison */}
-        <Card className="bg-[#0a0a1a]/80 border-[#1a1a35] backdrop-blur">
+        <Card className="bg-[#071115]/80 border-[#132d30] backdrop-blur">
           <CardHeader className="pb-3">
             <CardTitle className="text-white flex items-center gap-2 text-base">
               <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
@@ -312,17 +312,17 @@ export default function FlashLoanSimulator() {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               {/* Uniswap */}
-              <div className="bg-blue-950/20 border border-blue-900/40 rounded-xl p-4">
+              <div className="bg-teal-950/20 border border-teal-900/40 rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-7 h-7 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-xs font-bold text-blue-400">U</div>
-                  <span className="text-blue-400 font-semibold text-sm">Uniswap</span>
-                  <span className="ml-auto text-[10px] text-blue-700 bg-blue-950/50 px-2 py-0.5 rounded font-mono">BUY</span>
+                  <div className="w-7 h-7 rounded-full bg-teal-600/20 border border-teal-500/30 flex items-center justify-center text-xs font-bold text-teal-400">U</div>
+                  <span className="text-teal-400 font-semibold text-sm">Uniswap</span>
+                  <span className="ml-auto text-[10px] text-teal-700 bg-teal-950/50 px-2 py-0.5 rounded font-mono">BUY</span>
                 </div>
                 <div className="text-2xl font-mono font-bold text-white">${uniPrice.toLocaleString()}</div>
-                <div className="text-slate-500 text-xs mt-0.5">ETH / USDC</div>
+                <div className="text-[#6b8a99] text-xs mt-0.5">ETH / USDC</div>
                 <div className="mt-3 space-y-1.5">
                   {[["ETH", `${UNI_POOL.tokenX} ETH`], ["USDC", `${UNI_POOL.tokenY.toLocaleString()}`]].map(([t, v]) => (
-                    <div key={t} className="flex justify-between text-xs text-slate-500">
+                    <div key={t} className="flex justify-between text-xs text-[#6b8a99]">
                       <span>{t} Reserve</span>
                       <span className="font-mono">{v}</span>
                     </div>
@@ -331,17 +331,17 @@ export default function FlashLoanSimulator() {
               </div>
 
               {/* SushiSwap */}
-              <div className="bg-purple-950/20 border border-purple-900/40 rounded-xl p-4">
+              <div className="bg-amber-950/20 border border-amber-900/40 rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-7 h-7 rounded-full bg-purple-600/20 border border-purple-500/30 flex items-center justify-center text-xs font-bold text-purple-400">S</div>
-                  <span className="text-purple-400 font-semibold text-sm">SushiSwap</span>
-                  <span className="ml-auto text-[10px] text-purple-700 bg-purple-950/50 px-2 py-0.5 rounded font-mono">SELL</span>
+                  <div className="w-7 h-7 rounded-full bg-amber-600/20 border border-amber-500/30 flex items-center justify-center text-xs font-bold text-amber-400">S</div>
+                  <span className="text-amber-400 font-semibold text-sm">SushiSwap</span>
+                  <span className="ml-auto text-[10px] text-amber-700 bg-amber-950/50 px-2 py-0.5 rounded font-mono">SELL</span>
                 </div>
                 <div className="text-2xl font-mono font-bold text-white">${sushiPrice.toFixed(2)}</div>
-                <div className="text-slate-500 text-xs mt-0.5">ETH / USDC</div>
+                <div className="text-[#6b8a99] text-xs mt-0.5">ETH / USDC</div>
                 <div className="mt-3 space-y-1.5">
                   {[["ETH", `${sushiPool.tokenX.toFixed(2)} ETH`], ["USDC", `${sushiPool.tokenY.toFixed(0)}`]].map(([t, v]) => (
-                    <div key={t} className="flex justify-between text-xs text-slate-500">
+                    <div key={t} className="flex justify-between text-xs text-[#6b8a99]">
                       <span>{t} Reserve</span>
                       <span className="font-mono">{v}</span>
                     </div>
@@ -352,7 +352,7 @@ export default function FlashLoanSimulator() {
 
             {/* Spread badge */}
             <div className="flex items-center justify-between bg-emerald-950/20 border border-emerald-900/30 rounded-lg px-4 py-2.5">
-              <span className="text-sm text-slate-400">Price Spread</span>
+              <span className="text-sm text-[#6b8a99]">Price Spread</span>
               <div className="flex items-center gap-3">
                 <span className="text-emerald-400 font-mono font-semibold">+${spreadUsd.toFixed(2)} / ETH</span>
                 <span className="text-emerald-600 font-mono text-sm">({priceSpreadPct.toFixed(1)}%)</span>
@@ -362,7 +362,7 @@ export default function FlashLoanSimulator() {
         </Card>
 
         {/* Flash loan flow */}
-        <Card className="bg-[#0a0a1a]/80 border-[#1a1a35] backdrop-blur">
+        <Card className="bg-[#071115]/80 border-[#132d30] backdrop-blur">
           <CardHeader className="pb-3">
             <CardTitle className="text-white flex items-center gap-2 text-base">
               <Zap className="w-4 h-4 text-amber-400" />
@@ -375,7 +375,7 @@ export default function FlashLoanSimulator() {
         </Card>
 
         {/* Charts */}
-        <Card className="bg-[#0a0a1a]/80 border-[#1a1a35] backdrop-blur">
+        <Card className="bg-[#071115]/80 border-[#132d30] backdrop-blur">
           <CardContent className="p-4">
             <Tabs defaultValue="curve">
               <TabsList className="w-full grid grid-cols-2">
@@ -401,14 +401,14 @@ export default function FlashLoanSimulator() {
 
       {/* ── Right: Controls ── */}
       <div className="space-y-6">
-        <Card className="bg-[#0a0a1a]/80 border-[#1a1a35] backdrop-blur">
+        <Card className="bg-[#071115]/80 border-[#132d30] backdrop-blur">
           <CardContent className="p-6 space-y-6">
             <h3 className="text-base font-semibold text-white">Flash Loan Controls</h3>
 
             {/* Borrow amount */}
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
-                <span className="text-slate-400">Borrow from Aave</span>
+                <span className="text-[#6b8a99]">Borrow from Aave</span>
                 <span className="font-mono text-white text-base">{borrowAmount.toLocaleString()} USDC</span>
               </div>
               <Slider
@@ -419,7 +419,7 @@ export default function FlashLoanSimulator() {
               <div className="flex gap-1.5">
                 {[25000, 50000, 75000, 100000].map(v => (
                   <button key={v} onClick={() => setBorrowAmount(v)}
-                    className="flex-1 text-xs py-1.5 rounded-md bg-[#111128] hover:bg-[#1a1a35] text-slate-400 hover:text-slate-200 transition-colors border border-[#1a1a35]">
+                    className="qbtn">
                     {v / 1000}k
                   </button>
                 ))}
@@ -429,7 +429,7 @@ export default function FlashLoanSimulator() {
             {/* Price spread */}
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
-                <span className="text-slate-400">SushiSwap Price Spread</span>
+                <span className="text-[#6b8a99]">SushiSwap Price Spread</span>
                 <span className="font-mono text-emerald-400 text-base">+{priceSpreadPct}%</span>
               </div>
               <Slider
@@ -440,7 +440,7 @@ export default function FlashLoanSimulator() {
               <div className="flex gap-1.5">
                 {[2, 5, 8, 12].map(v => (
                   <button key={v} onClick={() => setPriceSpreadPct(v)}
-                    className="flex-1 text-xs py-1.5 rounded-md bg-[#111128] hover:bg-[#1a1a35] text-slate-400 hover:text-slate-200 transition-colors border border-[#1a1a35]">
+                    className="qbtn">
                     {v}%
                   </button>
                 ))}
@@ -471,7 +471,7 @@ export default function FlashLoanSimulator() {
                 )}
               </div>
 
-              <div className="h-px bg-slate-800" />
+              <div className="h-px bg-[#132d30]" />
 
               {[
                 ["Flash Loan Fee", `-$${(result.repaymentRequired - result.borrowAmount).toFixed(2)}`],
@@ -480,13 +480,13 @@ export default function FlashLoanSimulator() {
                 ["Must Repay", `$${result.repaymentRequired.toFixed(2)}`],
               ].map(([label, val], i) => (
                 <div key={i} className="flex justify-between text-sm">
-                  <span className="text-slate-500">{label}</span>
-                  <span className="font-mono text-slate-300">{val}</span>
+                  <span className="text-[#6b8a99]">{label}</span>
+                  <span className="font-mono text-[#a7d3c0]">{val}</span>
                 </div>
               ))}
 
-              <div className="flex justify-between items-center pt-1 border-t border-slate-800">
-                <span className="text-sm text-slate-400">Net Profit</span>
+              <div className="flex justify-between items-center pt-1 border-t border-[#132d30]">
+                <span className="text-sm text-[#6b8a99]">Net Profit</span>
                 <span className={`font-mono text-base font-bold ${result.profit >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
                   {result.profit >= 0 ? "+" : ""}${result.profit.toFixed(2)}
                 </span>
@@ -494,8 +494,8 @@ export default function FlashLoanSimulator() {
             </motion.div>
 
             {/* Optimal hint */}
-            <div className="text-xs text-slate-500 bg-[#111128] border border-[#1a1a35] rounded-lg p-3">
-              <span className="text-violet-400 font-semibold">Optimal borrow:</span>{" "}
+            <div className="text-xs text-[#6b8a99] bg-[#0f1d24] border border-[#132d30] rounded-lg p-3">
+              <span className="text-cyan-400 font-semibold">Optimal borrow:</span>{" "}
               ${optimalPoint.amount}k USDC → max profit{" "}
               <span className="text-emerald-400">${optimalPoint.profit.toFixed(0)}</span>
             </div>
@@ -505,7 +505,7 @@ export default function FlashLoanSimulator() {
               <Button
                 onClick={runAnimation}
                 disabled={isRunning}
-                className="flex-1 h-11 text-sm gap-2 bg-indigo-600 hover:bg-indigo-500 border-0"
+                className="flex-1 h-11 text-sm gap-2 bg-teal-600 hover:bg-teal-500 border-0"
               >
                 <Zap className="w-4 h-4" />
                 {isRunning ? "Executing..." : phase === 5 ? "Replay" : "Execute Flash Loan"}
@@ -513,7 +513,7 @@ export default function FlashLoanSimulator() {
               <Button
                 onClick={() => setPhase(0)}
                 variant="outline"
-                className="h-11 border-[#1a1a35] hover:bg-[#111128]"
+                className="h-11 border-[#132d30] hover:bg-[#0f1d24]"
               >
                 <RefreshCcw className="w-4 h-4" />
               </Button>
@@ -522,7 +522,7 @@ export default function FlashLoanSimulator() {
         </Card>
 
         {/* Explainer */}
-        <Card className="bg-[#0a0a1a]/80 border-[#1a1a35] backdrop-blur">
+        <Card className="bg-[#071115]/80 border-[#132d30] backdrop-blur">
           <CardHeader className="pb-2">
             <CardTitle className="text-white text-base">How Flash Loans Work</CardTitle>
           </CardHeader>

@@ -34,7 +34,7 @@ export default function PoolVisualizer({
           className="w-full h-full"
           style={{
             backgroundImage:
-              "linear-gradient(rgba(59,130,246,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.3) 1px, transparent 1px)",
+              "linear-gradient(rgba(20,184,166,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(20,184,166,0.3) 1px, transparent 1px)",
             backgroundSize: "40px 40px",
           }}
         />
@@ -47,9 +47,9 @@ export default function PoolVisualizer({
       >
         <defs>
           <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.4" />
-            <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.6" />
-            <stop offset="100%" stopColor="#22c55e" stopOpacity="0.4" />
+            <stop offset="0%" stopColor="#14b8a6" stopOpacity="0.4" />
+            <stop offset="50%" stopColor="#22d3ee" stopOpacity="0.6" />
+            <stop offset="100%" stopColor="#f59e0b" stopOpacity="0.4" />
           </linearGradient>
         </defs>
         <motion.path
@@ -78,8 +78,8 @@ export default function PoolVisualizer({
           className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full flex items-center justify-center cursor-default"
           style={{
             background:
-              "radial-gradient(circle at 35% 35%, #60a5fa, #3b82f6, #1d4ed8)",
-            boxShadow: "0 0 40px rgba(59,130,246,0.4), inset 0 -4px 12px rgba(0,0,0,0.3)",
+              "radial-gradient(circle at 35% 35%, #5eead4, #14b8a6, #0d9488)",
+            boxShadow: "0 0 40px rgba(20,184,166,0.4), inset 0 -4px 12px rgba(0,0,0,0.3)",
           }}
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 300 }}
@@ -90,7 +90,7 @@ export default function PoolVisualizer({
           </div>
         </motion.div>
         <motion.div
-          className="mt-3 text-xs font-mono text-slate-400"
+          className="mt-3 text-xs font-mono text-[#6b8a99]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
@@ -109,8 +109,8 @@ export default function PoolVisualizer({
           className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full flex items-center justify-center cursor-default"
           style={{
             background:
-              "radial-gradient(circle at 35% 35%, #4ade80, #22c55e, #15803d)",
-            boxShadow: "0 0 40px rgba(34,197,94,0.4), inset 0 -4px 12px rgba(0,0,0,0.3)",
+              "radial-gradient(circle at 35% 35%, #fbbf24, #f59e0b, #b45309)",
+            boxShadow: "0 0 40px rgba(245,158,11,0.4), inset 0 -4px 12px rgba(0,0,0,0.3)",
           }}
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 300 }}
@@ -125,7 +125,7 @@ export default function PoolVisualizer({
           </div>
         </motion.div>
         <motion.div
-          className="mt-3 text-xs font-mono text-slate-400"
+          className="mt-3 text-xs font-mono text-[#6b8a99]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
@@ -143,8 +143,8 @@ export default function PoolVisualizer({
             style={{
               background:
                 swapHistory[swapHistory.length - 1].direction === "x-to-y"
-                  ? "#3b82f6"
-                  : "#22c55e",
+                  ? "#14b8a6"
+                  : "#f59e0b",
             }}
             initial={{
               x: swapHistory[swapHistory.length - 1].direction === "x-to-y" ? -150 : 150,
@@ -165,10 +165,10 @@ export default function PoolVisualizer({
 
       {/* Stats bar at bottom */}
       <div className="absolute bottom-4 left-4 right-4 flex flex-wrap justify-center gap-4 text-xs font-mono">
-        <div className="bg-slate-800/80 backdrop-blur px-3 py-2 rounded-lg">
-          <span className="text-slate-400">Price: </span>
+        <div className="bg-[#0f1d24]/80 backdrop-blur px-3 py-2 rounded-lg">
+          <span className="text-[#6b8a99]">Price: </span>
           <span className="text-white">${currentPrice.toFixed(2)}</span>
-          <span className={priceChange >= 0 ? "text-green-400 ml-1" : "text-red-400 ml-1"}>
+          <span className={priceChange >= 0 ? "text-emerald-400 ml-1" : "text-rose-400 ml-1"}>
             ({priceChange >= 0 ? "+" : ""}{priceChange.toFixed(1)}%)
           </span>
         </div>
@@ -177,19 +177,19 @@ export default function PoolVisualizer({
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="bg-red-950/60 backdrop-blur border border-red-800/30 px-3 py-2 rounded-lg text-red-400"
+              className="bg-rose-950/40 backdrop-blur border border-red-800/30 px-3 py-2 rounded-lg text-rose-400"
             >
               IL: {impermanentLoss.toFixed(3)}%
             </motion.div>
           )}
         </AnimatePresence>
         {totalFeesEarned > 0 && (
-          <div className="bg-green-950/60 backdrop-blur border border-green-800/30 px-3 py-2 rounded-lg text-green-400">
+          <div className="bg-emerald-950/40 backdrop-blur border border-green-800/30 px-3 py-2 rounded-lg text-emerald-400">
             Fees: ${totalFeesEarned.toFixed(2)}
           </div>
         )}
-        <div className="bg-slate-800/80 backdrop-blur px-3 py-2 rounded-lg">
-          <span className="text-slate-400">Swaps: </span>
+        <div className="bg-[#0f1d24]/80 backdrop-blur px-3 py-2 rounded-lg">
+          <span className="text-[#6b8a99]">Swaps: </span>
           <span className="text-white">{swapHistory.length}</span>
         </div>
       </div>
