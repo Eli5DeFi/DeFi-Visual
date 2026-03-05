@@ -11,7 +11,7 @@ import {
   Tooltip,
   ReferenceLine,
 } from "recharts"
-import { CHART_MARGIN, CHART_GRID, CHART_AXIS, CHART_TICK, CHART_TOOLTIP_STYLE } from "@/lib/constants"
+import { CHART_MARGIN, CHART_GRID, CHART_AXIS, CHART_TICK, CHART_TOOLTIP_STYLE, CHART_LABEL } from "@/lib/constants"
 
 interface ProfitChartProps {
   data: Array<{ capital: number; profit: number }>
@@ -39,13 +39,13 @@ function ProfitChartInner({ data, currentCapital, optimalCapital }: ProfitChartP
           stroke={CHART_AXIS}
           tick={CHART_TICK}
           tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`}
-          label={{ value: "Attacker Capital (USDC)", position: "insideBottom", offset: -5, fill: "#6b8a99", fontSize: 11 }}
+          label={{ value: "Attacker Capital (USDC)", position: "insideBottom", offset: -5, ...CHART_LABEL }}
         />
         <YAxis
           stroke={CHART_AXIS}
           tick={CHART_TICK}
           tickFormatter={(v) => `$${v.toFixed(0)}`}
-          label={{ value: "Profit (USDC)", angle: -90, position: "insideLeft", offset: 5, fill: "#6b8a99", fontSize: 11 }}
+          label={{ value: "Profit (USDC)", angle: -90, position: "insideLeft", offset: 5, ...CHART_LABEL }}
         />
         <Tooltip
           contentStyle={CHART_TOOLTIP_STYLE}

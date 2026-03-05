@@ -107,6 +107,7 @@ export default function ConceptExplainer() {
         >
           <button
             onClick={() => setOpenIndex(openIndex === index ? null : index)}
+            aria-expanded={openIndex === index}
             className="w-full flex items-center justify-between p-4 hover:bg-[#0f1d24]/50 transition-colors"
           >
             <div className="flex items-center gap-3">

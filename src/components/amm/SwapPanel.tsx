@@ -82,7 +82,8 @@ export default function SwapPanel({
             <button
               key={pct}
               onClick={() => setSwapAmount(Math.max(step, maxAmount * pct))}
-              className="flex-1 text-xs py-1.5 rounded-md bg-[#0f1d24] hover:bg-[#132d30] text-[#a7d3c0] transition-colors"
+              aria-label={`Set amount to ${pct * 100}% of max`}
+              className="qbtn"
             >
               {pct * 100}%
             </button>

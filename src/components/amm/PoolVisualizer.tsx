@@ -3,6 +3,7 @@
 import React from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { PoolState } from "@/lib/mathEngine"
+import { THEME } from "@/lib/constants"
 
 interface PoolVisualizerProps {
   pool: PoolState
@@ -63,7 +64,7 @@ export default function PoolVisualizer({
           transition={{ duration: 1.5, ease: "easeInOut" }}
         />
         {/* K constant label */}
-        <text x="400" y="140" textAnchor="middle" fill="#94a3b8" fontSize="12" fontFamily="monospace">
+        <text x="400" y="140" textAnchor="middle" fill={THEME.mutedFg} fontSize="12" fontFamily="monospace">
           k = {pool.k.toLocaleString(undefined, { maximumFractionDigits: 0 })}
         </text>
       </svg>
@@ -164,7 +165,7 @@ export default function PoolVisualizer({
       </AnimatePresence>
 
       {/* Stats bar at bottom */}
-      <div className="absolute bottom-4 left-4 right-4 flex flex-wrap justify-center gap-4 text-xs font-mono">
+      <div className="absolute bottom-4 left-4 right-4 flex flex-wrap justify-center gap-3 text-xs font-mono">
         <div className="bg-[#0f1d24]/80 backdrop-blur px-3 py-2 rounded-lg">
           <span className="text-[#6b8a99]">Price: </span>
           <span className="text-white">${currentPrice.toFixed(2)}</span>

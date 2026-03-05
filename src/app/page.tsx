@@ -132,7 +132,7 @@ export default function Home() {
                 <motion.button key={tab.id} role="tab" aria-selected={isActive}
                   onClick={() => setActiveTab(tab.id)}
                   whileHover={{ scale: isActive ? 1 : 1.01 }} whileTap={{ scale: 0.98 }}
-                  className={`relative flex-1 flex items-center justify-center gap-2 px-3 py-3 rounded-xl text-sm font-medium transition-colors duration-150 cursor-pointer ${isActive ? "text-white" : "text-[#6b8a99] hover:text-[#d1fae5]"}`}>
+                  className={`relative flex-1 flex items-center justify-center gap-2 px-3 py-3 rounded-xl text-sm font-medium transition-colors duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 ${isActive ? "text-white" : "text-[#6b8a99] hover:text-[#d1fae5]"}`}>
                   {isActive && (
                     <motion.div layoutId="activeTab"
                       className="absolute inset-0 rounded-xl bg-[#0f1d24] border border-teal-800/25 animated-border tab-glow-enter"
@@ -175,7 +175,9 @@ export default function Home() {
             <div className="flex items-center gap-4 text-[11px] text-[#3b6b6b]">
               <span>Educational tool</span><div className="w-1 h-1 rounded-full bg-[#132d30]" />
               <span>Real protocol math</span><div className="w-1 h-1 rounded-full bg-[#132d30]" />
-              <span>No wallet needed</span>
+              <span>No wallet needed</span><div className="w-1 h-1 rounded-full bg-[#132d30]" />
+              <a href="https://github.com/Eli5DeFi/DeFi-Visual" target="_blank" rel="noopener noreferrer"
+                className="text-[#6b8a99] hover:text-teal-400 transition-colors">GitHub</a>
             </div>
           </div>
         </div>

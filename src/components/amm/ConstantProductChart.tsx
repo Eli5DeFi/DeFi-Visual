@@ -12,7 +12,7 @@ import {
   ReferenceDot,
 } from "recharts"
 import { getConstantProductCurve, PoolState } from "@/lib/mathEngine"
-import { CHART_MARGIN, CHART_GRID, CHART_AXIS, CHART_TICK, CHART_TOOLTIP_STYLE } from "@/lib/constants"
+import { CHART_MARGIN, CHART_GRID, CHART_AXIS, CHART_TICK, CHART_TOOLTIP_STYLE, CHART_LABEL } from "@/lib/constants"
 
 interface ConstantProductChartProps {
   pool: PoolState
@@ -56,8 +56,7 @@ function ConstantProductChart({
               value: "Token X (ETH)",
               position: "bottom",
               offset: 5,
-              fill: "#6b8a99",
-              fontSize: 11,
+              ...CHART_LABEL,
             }}
             tickFormatter={(v: number) => v.toFixed(1)}
           />
@@ -69,8 +68,7 @@ function ConstantProductChart({
               angle: -90,
               position: "insideLeft",
               offset: 10,
-              fill: "#6b8a99",
-              fontSize: 11,
+              ...CHART_LABEL,
             }}
             tickFormatter={(v: number) =>
               v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v.toFixed(0)

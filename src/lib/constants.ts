@@ -11,6 +11,8 @@ export const CHART_TOOLTIP_STYLE = {
   color: "#f0fdf4",
 } as const
 
+export const CHART_LABEL = { fill: "#6b8a99", fontSize: 11 } as const
+
 /* ── Pool defaults ── */
 export const DEFAULT_AMM_POOL = {
   tokenX: 10,

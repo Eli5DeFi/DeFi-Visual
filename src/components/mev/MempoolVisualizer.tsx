@@ -4,6 +4,7 @@ import React from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { PoolState } from "@/lib/mathEngine"
 import { SandwichResult } from "@/lib/mevEngine"
+import { THEME } from "@/lib/constants"
 
 type Phase = "idle" | "frontrun" | "victim" | "backrun" | "complete"
 
@@ -35,7 +36,7 @@ export default function MempoolVisualizer({
           className="w-full h-full"
           style={{
             backgroundImage:
-              "linear-gradient(rgba(244,63,94,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(244,63,94,0.3) 1px, transparent 1px)",
+              `linear-gradient(${THEME.danger}4D 1px, transparent 1px), linear-gradient(90deg, ${THEME.danger}4D 1px, transparent 1px)`,
             backgroundSize: "40px 40px",
           }}
         />

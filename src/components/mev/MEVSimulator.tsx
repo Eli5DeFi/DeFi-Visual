@@ -132,7 +132,8 @@ export default function MEVSimulator() {
                     <button
                       key={v}
                       onClick={() => setVictimUsdc(v)}
-                      className="flex-1 text-xs py-1.5 rounded-md bg-[#0f1d24] hover:bg-[#132d30] text-[#a7d3c0] transition-colors"
+                      aria-label={`Set victim trade to ${(v / 1000).toFixed(0)}k USDC`}
+                      className="qbtn"
                     >
                       {(v / 1000).toFixed(0)}k
                     </button>
@@ -160,7 +161,8 @@ export default function MEVSimulator() {
                     <button
                       key={v}
                       onClick={() => setAttackerUsdc(v)}
-                      className="flex-1 text-xs py-1.5 rounded-md bg-[#0f1d24] hover:bg-[#132d30] text-[#a7d3c0] transition-colors"
+                      aria-label={`Set attacker capital to ${(v / 1000).toFixed(0)}k USDC`}
+                      className="qbtn"
                     >
                       {(v / 1000).toFixed(0)}k
                     </button>
