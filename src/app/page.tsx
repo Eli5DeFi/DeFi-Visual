@@ -5,218 +5,270 @@ import { motion, AnimatePresence } from "framer-motion"
 import AMMSimulator from "@/components/amm/AMMSimulator"
 import MEVSimulator from "@/components/mev/MEVSimulator"
 import FlashLoanSimulator from "@/components/flashloan/FlashLoanSimulator"
+import PendleSimulator from "@/components/pendle/PendleSimulator"
 
 /* ── Tab definitions ── */
 const TABS = [
   {
     id: "amm",
     label: "AMMs & IL",
-    fullLabel: "Automated Market Makers",
     icon: (
       <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none">
-        <path d="M2 8a6 6 0 1 0 12 0A6 6 0 0 0 2 8z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-        <path d="M8 5v3l2 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+        <circle cx="8" cy="8" r="5.5" stroke="currentColor" strokeWidth="1.5"/>
+        <path d="M5 8.5C6 6 10 6 11 8.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
       </svg>
     ),
-    badge: "LIVE",
-    badgeColor: "text-emerald-400 bg-emerald-950/60 border-emerald-900/60",
-    description: "Constant product curves, swaps & impermanent loss",
+    badge: "CORE",
+    badgeColor: "text-cyan-400 bg-cyan-950/60 border-cyan-900/50",
+    accent: "#06b6d4",
   },
   {
     id: "mev",
     label: "MEV Attacks",
-    fullLabel: "Sandwich Attacks",
     icon: (
       <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none">
-        <path d="M8 2L3 7h3v5h4V7h3L8 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+        <path d="M3 12l3-4 2.5 2L13 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <circle cx="13" cy="4" r="1.5" fill="currentColor" opacity="0.5"/>
       </svg>
     ),
     badge: "LIVE",
-    badgeColor: "text-rose-400 bg-rose-950/60 border-rose-900/60",
-    description: "Front-run, victim swap, back-run — MEV extracted",
+    badgeColor: "text-rose-400 bg-rose-950/60 border-rose-900/50",
+    accent: "#f43f5e",
   },
   {
     id: "flashloan",
     label: "Flash Loans",
-    fullLabel: "Flash Loan Arbitrage",
     icon: (
       <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none">
-        <path d="M9 2L5 9h4.5L7 14l6-8H8.5L9 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+        <path d="M9 2L5 9h4l-1 5 5-7H9l1-5z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/>
       </svg>
     ),
     badge: "NEW",
-    badgeColor: "text-indigo-400 bg-indigo-950/60 border-indigo-900/60",
-    description: "Zero-collateral loans, arbitrage & atomic execution",
+    badgeColor: "text-amber-400 bg-amber-950/60 border-amber-900/50",
+    accent: "#f59e0b",
+  },
+  {
+    id: "pendle",
+    label: "Pendle PT/YT",
+    icon: (
+      <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none">
+        <path d="M8 2v12M4 6l4-4 4 4M4 10l4 4 4-4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    ),
+    badge: "NEW",
+    badgeColor: "text-violet-400 bg-violet-950/60 border-violet-900/50",
+    accent: "#8b5cf6",
   },
 ] as const
 
 type TabId = (typeof TABS)[number]["id"]
 
-/* ── Stat cards in hero ── */
+/* ── Animation variants ── */
+const heroVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.12, delayChildren: 0.1 },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20, filter: "blur(8px)" },
+  visible: {
+    opacity: 1, y: 0, filter: "blur(0px)",
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const },
+  },
+}
+
+const statVariants = {
+  hidden: { opacity: 0, scale: 0.9, y: 12 },
+  visible: (i: number) => ({
+    opacity: 1, scale: 1, y: 0,
+    transition: { delay: 0.4 + i * 0.1, duration: 0.5, ease: [0.16, 1, 0.3, 1] as const },
+  }),
+}
+
+/* ── Hero stats ── */
 const HERO_STATS = [
-  { label: "Flash Loan Fee", value: "0.09%", sub: "Aave Protocol" },
-  { label: "AMM Fee", value: "0.30%", sub: "Standard Pool" },
-  { label: "MEV Extracted", value: "$1.3B+", sub: "All-time Ethereum" },
+  { label: "Flash Loan Fee", value: "0.09%", sub: "Aave v3" },
+  { label: "AMM Fee", value: "0.30%", sub: "Uniswap v2" },
+  { label: "MEV Extracted", value: "$1.3B+", sub: "All-time ETH" },
+  { label: "Pendle TVL", value: "$4B+", sub: "Yield Markets" },
 ]
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<TabId>("amm")
+  const activeTabData = TABS.find(t => t.id === activeTab)!
 
   return (
     <div className="min-h-screen bg-[#05050f] text-[#e8eaf6]">
-      {/* ── Hero header ── */}
-      <header className="relative overflow-hidden border-b border-[#1a1a35]">
-        {/* Grid background */}
-        <div className="absolute inset-0 grid-bg opacity-60" />
+      {/* ── Hero ── */}
+      <header className="relative overflow-hidden border-b border-[#12122a]">
+        {/* Grid */}
+        <div className="absolute inset-0 grid-bg" />
 
         {/* Glow orbs */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-96 h-96 -translate-x-1/2 -translate-y-1/2
-            bg-indigo-600/10 rounded-full blur-3xl" />
-          <div className="absolute top-0 right-1/4 w-96 h-96 translate-x-1/2 -translate-y-1/2
-            bg-violet-600/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-1/2 w-72 h-72 -translate-x-1/2 translate-y-1/2
-            bg-cyan-600/8 rounded-full blur-3xl" />
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute -top-48 left-1/4 w-[500px] h-[500px] bg-indigo-600/8 rounded-full blur-[100px] glow-orb" />
+          <div className="absolute -top-32 right-1/4 w-[400px] h-[400px] bg-violet-600/8 rounded-full blur-[100px] glow-orb-delayed" />
+          <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-cyan-600/5 rounded-full blur-[80px]" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-          >
+        {/* Floating particles */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {[
+            { left: "15%", bottom: "10%", delay: "0s", size: 3 },
+            { left: "30%", bottom: "20%", delay: "2s", size: 2 },
+            { left: "55%", bottom: "5%", delay: "4s", size: 2 },
+            { left: "75%", bottom: "15%", delay: "1s", size: 3 },
+            { left: "85%", bottom: "25%", delay: "5s", size: 2 },
+          ].map((p, i) => (
+            <div
+              key={i}
+              className="absolute rounded-full bg-indigo-400/40 particle"
+              style={{ left: p.left, bottom: p.bottom, width: p.size, height: p.size, animationDelay: p.delay }}
+            />
+          ))}
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
+          <motion.div variants={heroVariants} initial="hidden" animate="visible">
             {/* Badge */}
-            <div className="flex justify-center mb-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full
-                bg-indigo-950/60 border border-indigo-800/40 text-indigo-400 text-xs font-medium">
-                <div className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
-                Interactive DeFi Education — Real Math, Real Results
+            <motion.div variants={itemVariants} className="flex justify-center mb-8">
+              <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full
+                glass-card text-xs font-medium tracking-wide text-indigo-300">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75 animate-ping" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-indigo-400" />
+                </span>
+                Interactive DeFi Education — Real Protocol Math
               </div>
-            </div>
+            </motion.div>
 
             {/* Title */}
-            <h1 className="text-center text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight">
-              <span className="gradient-text">DeFi Visual</span>
-            </h1>
-            <p className="mt-4 text-center text-lg sm:text-xl text-[#7986a8] max-w-2xl mx-auto leading-relaxed">
-              Master DeFi primitives through interactive simulations.
-              AMMs, MEV sandwich attacks, and flash loan arbitrage — all powered by real protocol math.
-            </p>
+            <motion.h1 variants={itemVariants} className="text-center">
+              <span className="block text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight gradient-text leading-tight">
+                DeFi Visual
+              </span>
+            </motion.h1>
 
-            {/* Stats row */}
-            <div className="mt-10 flex flex-wrap justify-center gap-6">
-              {HERO_STATS.map(({ label, value, sub }) => (
-                <div key={label} className="text-center px-6 py-3 rounded-xl
-                  bg-[#0a0a1a]/60 border border-[#1a1a35] backdrop-blur">
-                  <div className="text-2xl font-mono font-bold gradient-text">{value}</div>
-                  <div className="text-xs text-slate-400 mt-0.5">{label}</div>
-                  <div className="text-[10px] text-slate-600 mt-0.5">{sub}</div>
-                </div>
+            <motion.p variants={itemVariants}
+              className="mt-5 text-center text-base sm:text-lg text-[#7986a8] max-w-xl mx-auto leading-relaxed">
+              Master DeFi primitives through interactive simulations.
+              AMMs, MEV, flash loans, and yield tokenization — all powered by the real math.
+            </motion.p>
+
+            {/* Stats */}
+            <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-3xl mx-auto">
+              {HERO_STATS.map(({ label, value, sub }, i) => (
+                <motion.div
+                  key={label}
+                  custom={i}
+                  variants={statVariants}
+                  initial="hidden"
+                  animate="visible"
+                  whileHover={{ scale: 1.04, y: -2 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                  className="glass-card rounded-xl px-4 py-3 text-center cursor-default
+                    hover:border-indigo-800/30 transition-colors"
+                >
+                  <div className="text-xl sm:text-2xl font-mono font-bold gradient-text">{value}</div>
+                  <div className="text-[11px] text-slate-400 mt-1">{label}</div>
+                  <div className="text-[10px] text-slate-600">{sub}</div>
+                </motion.div>
               ))}
             </div>
           </motion.div>
         </div>
       </header>
 
-      {/* ── Main content ── */}
+      {/* ── Main ── */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Custom tab navigation */}
-        <div className="mb-8">
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-2 p-1.5
-            bg-[#0a0a1a] border border-[#1a1a35] rounded-2xl">
+        {/* Tab navigation */}
+        <motion.nav
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.4 }}
+          className="mb-8"
+        >
+          <div className="flex gap-1.5 p-1.5 glass-card rounded-2xl">
             {TABS.map(tab => {
               const isActive = activeTab === tab.id
               return (
-                <button
+                <motion.button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`relative flex-1 flex items-center gap-3 px-4 py-3 rounded-xl
-                    text-left transition-all duration-200 group
+                  whileHover={{ scale: isActive ? 1 : 1.01 }}
+                  whileTap={{ scale: 0.98 }}
+                  className={`relative flex-1 flex items-center justify-center gap-2 px-3 py-3 rounded-xl
+                    text-sm font-medium transition-colors duration-150 cursor-pointer
                     ${isActive
-                      ? "bg-[#111128] border border-indigo-900/40 shadow-lg shadow-indigo-950/30"
-                      : "hover:bg-[#0d0d20] border border-transparent"
+                      ? "text-white"
+                      : "text-slate-500 hover:text-slate-300"
                     }`}
                 >
-                  {/* Active glow */}
+                  {/* Active background with animated border */}
                   {isActive && (
-                    <div className="absolute inset-0 rounded-xl bg-indigo-600/5 pointer-events-none" />
+                    <motion.div
+                      layoutId="activeTab"
+                      className="absolute inset-0 rounded-xl bg-[#111128] border border-indigo-800/30 animated-border tab-glow-enter"
+                      style={{ boxShadow: `0 0 24px ${tab.accent}15, 0 0 48px ${tab.accent}08` }}
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
                   )}
 
-                  {/* Icon */}
-                  <div className={`shrink-0 transition-colors ${
-                    isActive ? "text-indigo-400" : "text-slate-500 group-hover:text-slate-400"
-                  }`}>
-                    {tab.icon}
-                  </div>
-
-                  {/* Labels */}
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className={`text-sm font-semibold transition-colors ${
-                        isActive ? "text-white" : "text-slate-400 group-hover:text-slate-300"
-                      }`}>
-                        {tab.label}
-                      </span>
-                      <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded border ${tab.badgeColor}`}>
-                        {tab.badge}
-                      </span>
-                    </div>
-                    <div className="text-[11px] text-slate-600 truncate hidden sm:block mt-0.5">
-                      {tab.description}
-                    </div>
-                  </div>
-
-                  {/* Active indicator dot */}
-                  {isActive && (
-                    <div className="shrink-0 w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
-                  )}
-                </button>
+                  {/* Content */}
+                  <span className="relative z-10 flex items-center gap-2">
+                    <span style={{ color: isActive ? tab.accent : undefined }}>{tab.icon}</span>
+                    <span className="hidden sm:inline">{tab.label}</span>
+                    <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-md border leading-none
+                      ${isActive ? tab.badgeColor : "text-slate-600 bg-slate-900/50 border-slate-800"}`}>
+                      {tab.badge}
+                    </span>
+                  </span>
+                </motion.button>
               )
             })}
           </div>
-        </div>
+        </motion.nav>
 
         {/* Tab content */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
+            initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           >
             {activeTab === "amm" && <AMMSimulator />}
             {activeTab === "mev" && <MEVSimulator />}
             {activeTab === "flashloan" && <FlashLoanSimulator />}
+            {activeTab === "pendle" && <PendleSimulator />}
           </motion.div>
         </AnimatePresence>
       </main>
 
       {/* ── Footer ── */}
-      <footer className="border-t border-[#1a1a35] mt-16">
+      <footer className="border-t border-[#12122a] mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="text-sm text-slate-500">Built by</div>
+              <span className="text-sm text-slate-600">Built by</span>
               <a
                 href="https://x.com/Eli5defi"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-sm font-semibold
-                  text-indigo-400 hover:text-indigo-300 transition-colors"
+                className="text-sm font-semibold text-indigo-400 hover:text-indigo-300 transition-colors"
               >
                 @Eli5DeFi
-                <svg className="w-3 h-3" viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5z"/>
-                </svg>
               </a>
             </div>
-
-            <div className="flex items-center gap-4 text-xs text-slate-600">
-              <span>Educational tool — not financial advice</span>
-              <div className="w-1 h-1 rounded-full bg-slate-700" />
+            <div className="flex items-center gap-4 text-[11px] text-slate-600">
+              <span>Educational tool</span>
+              <div className="w-1 h-1 rounded-full bg-slate-800" />
               <span>Real protocol math</span>
-              <div className="w-1 h-1 rounded-full bg-slate-700" />
+              <div className="w-1 h-1 rounded-full bg-slate-800" />
               <span>No wallet needed</span>
             </div>
           </div>
