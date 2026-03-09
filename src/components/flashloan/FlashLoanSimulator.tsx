@@ -419,7 +419,8 @@ export default function FlashLoanSimulator() {
               <div className="flex gap-1.5">
                 {[25000, 50000, 75000, 100000].map(v => (
                   <button key={v} onClick={() => setBorrowAmount(v)}
-                    className="qbtn">
+                    className="qbtn"
+                    aria-label={`Set borrow amount to ${v / 1000}k`}>
                     {v / 1000}k
                   </button>
                 ))}
@@ -440,7 +441,8 @@ export default function FlashLoanSimulator() {
               <div className="flex gap-1.5">
                 {[2, 5, 8, 12].map(v => (
                   <button key={v} onClick={() => setPriceSpreadPct(v)}
-                    className="qbtn">
+                    className="qbtn"
+                    aria-label={`Set price spread to ${v}%`}>
                     {v}%
                   </button>
                 ))}

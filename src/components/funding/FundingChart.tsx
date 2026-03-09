@@ -14,7 +14,7 @@ import {
   ReferenceLine,
 } from "recharts"
 import { generateFundingHistory } from "@/lib/fundingEngine"
-import { CHART_MARGIN, CHART_GRID, CHART_AXIS, CHART_TICK, CHART_TOOLTIP_STYLE, CHART_LABEL } from "@/lib/constants"
+import { CHART_MARGIN, CHART_GRID, CHART_AXIS, CHART_TICK, CHART_TOOLTIP_STYLE, CHART_LABEL, THEME } from "@/lib/constants"
 
 interface FundingChartProps {
   basePrice: number
@@ -62,8 +62,8 @@ function FundingChart({ basePrice, hours, longBias, volatility, totalOI, mode }:
               wrapperStyle={{ fontSize: 11, color: "#6b8a99" }}
               formatter={(value: string) => value === "longOI" ? "Long OI" : "Short OI"}
             />
-            <Bar dataKey="longOI" fill="#14b8a6" fillOpacity={0.6} stackId="oi" />
-            <Bar dataKey="shortOI" fill="#f43f5e" fillOpacity={0.6} stackId="oi" />
+            <Bar dataKey="longOI" fill={THEME.primary} fillOpacity={0.6} stackId="oi" />
+            <Bar dataKey="shortOI" fill={THEME.danger} fillOpacity={0.6} stackId="oi" />
           </ComposedChart>
         </ResponsiveContainer>
       </div>
@@ -102,8 +102,8 @@ function FundingChart({ basePrice, hours, longBias, volatility, totalOI, mode }:
               formatter={(value: string) => value === "cumulativeLongCost" ? "Long Cumulative Cost" : "Short Cumulative Earnings"}
             />
             <ReferenceLine y={0} stroke={CHART_AXIS} />
-            <Line type="monotone" dataKey="cumulativeLongCost" stroke="#f43f5e" strokeWidth={2} dot={false} />
-            <Line type="monotone" dataKey="cumulativeShortEarnings" stroke="#14b8a6" strokeWidth={2} dot={false} />
+            <Line type="monotone" dataKey="cumulativeLongCost" stroke={THEME.danger} strokeWidth={2} dot={false} />
+            <Line type="monotone" dataKey="cumulativeShortEarnings" stroke={THEME.primary} strokeWidth={2} dot={false} />
           </ComposedChart>
         </ResponsiveContainer>
       </div>
@@ -168,11 +168,11 @@ function FundingChart({ basePrice, hours, longBias, volatility, totalOI, mode }:
           <Bar
             yAxisId="rate"
             dataKey="fundingRate"
-            fill="#14b8a6"
+            fill={THEME.primary}
             fillOpacity={0.7}
           />
-          <Line yAxisId="price" type="monotone" dataKey="markPrice" stroke="#22d3ee" strokeWidth={1.5} dot={false} />
-          <Line yAxisId="price" type="monotone" dataKey="indexPrice" stroke="#f59e0b" strokeWidth={1.5} dot={false} strokeDasharray="4 4" />
+          <Line yAxisId="price" type="monotone" dataKey="markPrice" stroke={THEME.cyan} strokeWidth={1.5} dot={false} />
+          <Line yAxisId="price" type="monotone" dataKey="indexPrice" stroke={THEME.accent} strokeWidth={1.5} dot={false} strokeDasharray="4 4" />
         </ComposedChart>
       </ResponsiveContainer>
     </div>

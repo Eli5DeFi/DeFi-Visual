@@ -451,7 +451,7 @@ export default function PendleSimulator() {
               <div className="flex gap-1.5">
                 {[3, 5, 8, 15].map(v => (
                   <button key={v} onClick={() => setImpliedAPY(v / 100)}
-                    className="qbtn">
+                    className="qbtn" aria-label={`Set implied APY to ${v}%`}>
                     {v}%
                   </button>
                 ))}
@@ -472,7 +472,7 @@ export default function PendleSimulator() {
               <div className="flex gap-1.5">
                 {[2, 5, 10, 20].map(v => (
                   <button key={v} onClick={() => setUnderlyingAPY(v / 100)}
-                    className="qbtn">
+                    className="qbtn" aria-label={`Set underlying APY to ${v}%`}>
                     {v}%
                   </button>
                 ))}
@@ -493,7 +493,7 @@ export default function PendleSimulator() {
               <div className="flex gap-1.5">
                 {[30, 90, 180, 365].map(v => (
                   <button key={v} onClick={() => setMaturityDays(v)}
-                    className="qbtn">
+                    className="qbtn" aria-label={`Set maturity to ${v} days`}>
                     {v}d
                   </button>
                 ))}

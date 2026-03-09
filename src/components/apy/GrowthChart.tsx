@@ -12,7 +12,7 @@ import {
   Legend,
 } from "recharts"
 import { generateGrowthCurve } from "@/lib/apyEngine"
-import { CHART_MARGIN, CHART_GRID, CHART_AXIS, CHART_TICK, CHART_TOOLTIP_STYLE, CHART_LABEL } from "@/lib/constants"
+import { CHART_MARGIN, CHART_GRID, CHART_AXIS, CHART_TICK, CHART_TOOLTIP_STYLE, CHART_LABEL, THEME } from "@/lib/constants"
 
 interface GrowthChartProps {
   principal: number
@@ -87,7 +87,7 @@ function GrowthChart({ principal, aprPercent, compoundsPerYear, days }: GrowthCh
           <Area
             type="monotone"
             dataKey="simpleValue"
-            stroke="#f59e0b"
+            stroke={THEME.accent}
             strokeWidth={2}
             strokeDasharray="6 3"
             fill="url(#aprGrad)"
@@ -97,7 +97,7 @@ function GrowthChart({ principal, aprPercent, compoundsPerYear, days }: GrowthCh
           <Area
             type="monotone"
             dataKey="compoundedValue"
-            stroke="#14b8a6"
+            stroke={THEME.primary}
             strokeWidth={2}
             fill="url(#apyGrad)"
             isAnimationActive={true}
@@ -106,7 +106,7 @@ function GrowthChart({ principal, aprPercent, compoundsPerYear, days }: GrowthCh
           <Area
             type="monotone"
             dataKey="difference"
-            stroke="#22d3ee"
+            stroke={THEME.cyan}
             strokeWidth={1.5}
             fill="url(#diffGrad)"
             isAnimationActive={true}

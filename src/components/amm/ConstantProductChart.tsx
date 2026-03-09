@@ -12,7 +12,7 @@ import {
   ReferenceDot,
 } from "recharts"
 import { getConstantProductCurve, PoolState } from "@/lib/mathEngine"
-import { CHART_MARGIN, CHART_GRID, CHART_AXIS, CHART_TICK, CHART_TOOLTIP_STYLE, CHART_LABEL } from "@/lib/constants"
+import { CHART_MARGIN, CHART_GRID, CHART_AXIS, CHART_TICK, CHART_TOOLTIP_STYLE, CHART_LABEL, THEME } from "@/lib/constants"
 
 interface ConstantProductChartProps {
   pool: PoolState
@@ -96,7 +96,7 @@ function ConstantProductChart({
           <Line
             type="monotone"
             dataKey="current"
-            stroke="#14b8a6"
+            stroke={THEME.primary}
             strokeWidth={2}
             dot={false}
             isAnimationActive={true}
@@ -107,8 +107,8 @@ function ConstantProductChart({
             x={pool.tokenX}
             y={pool.tokenY}
             r={6}
-            fill="#f59e0b"
-            stroke="#f59e0b"
+            fill={THEME.accent}
+            stroke={THEME.accent}
             strokeWidth={2}
           />
           {/* Initial position dot */}

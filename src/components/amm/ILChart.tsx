@@ -13,7 +13,7 @@ import {
   ReferenceDot,
 } from "recharts"
 import { generateILCurve } from "@/lib/mathEngine"
-import { CHART_MARGIN, CHART_GRID, CHART_AXIS, CHART_TICK, CHART_TOOLTIP_STYLE, CHART_LABEL } from "@/lib/constants"
+import { CHART_MARGIN, CHART_GRID, CHART_AXIS, CHART_TICK, CHART_TOOLTIP_STYLE, CHART_LABEL, THEME } from "@/lib/constants"
 
 interface ILChartProps {
   currentPriceChange: number
@@ -66,7 +66,7 @@ function ILChart({ currentPriceChange, currentIL }: ILChartProps) {
           <Area
             type="monotone"
             dataKey="il"
-            stroke="#f43f5e"
+            stroke={THEME.danger}
             strokeWidth={2}
             fill="url(#ilGradient)"
             isAnimationActive={false}
@@ -77,8 +77,8 @@ function ILChart({ currentPriceChange, currentIL }: ILChartProps) {
               x={Math.round(currentPriceChange / 5) * 5}
               y={Math.abs(currentIL)}
               r={6}
-              fill="#f59e0b"
-              stroke="#f59e0b"
+              fill={THEME.accent}
+              stroke={THEME.accent}
               strokeWidth={2}
             />
           )}
