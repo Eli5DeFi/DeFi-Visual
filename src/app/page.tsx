@@ -2,6 +2,7 @@
 
 import React, { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { ChevronRight, ChevronLeft } from "lucide-react"
 import AMMSimulator from "@/components/amm/AMMSimulator"
 import MEVSimulator from "@/components/mev/MEVSimulator"
 import FlashLoanSimulator from "@/components/flashloan/FlashLoanSimulator"
@@ -10,6 +11,7 @@ import APYSimulator from "@/components/apy/APYSimulator"
 import FundingRateSimulator from "@/components/funding/FundingRateSimulator"
 import ComposabilitySimulator from "@/components/composability/ComposabilitySimulator"
 import StableSwapSimulator from "@/components/stableswap/StableSwapSimulator"
+import DeltaNeutralSimulator from "@/components/deltaneutral/DeltaNeutralSimulator"
 
 /* ── Tabs ── */
 const TABS = [
@@ -70,6 +72,14 @@ const TABS = [
     accent: "#a855f7",
   },
   {
+    id: "deltaneutral",
+    label: "Delta Neutral",
+    icon: <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none"><path d="M8 2L3 13h10L8 2z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/><path d="M5.5 9h5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>,
+    badge: "NEW",
+    badgeColor: "text-indigo-400 bg-indigo-950/60 border-indigo-900/50",
+    accent: "#818cf8",
+  },
+  {
     id: "composability",
     label: "Money Legos",
     icon: <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none"><rect x="2" y="9" width="5" height="5" rx="0.5" stroke="currentColor" strokeWidth="1.2"/><rect x="9" y="9" width="5" height="5" rx="0.5" stroke="currentColor" strokeWidth="1.2"/><rect x="5.5" y="2" width="5" height="5" rx="0.5" stroke="currentColor" strokeWidth="1.2"/></svg>,
@@ -107,6 +117,9 @@ const HERO_STATS = [
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<TabId>("amm")
+  const [sidebarOpen, setSidebarOpen] = useState(true)
+
+  const activeTabData = TABS.find(t => t.id === activeTab)!
 
   return (
     <div className="min-h-screen bg-[#030712] text-[#f0fdf4]">
@@ -158,51 +171,147 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <motion.nav initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.4 }} className="mb-8" role="navigation" aria-label="Simulator tabs">
-          <div className="flex gap-1.5 p-1.5 glass-card rounded-2xl" role="tablist">
-            {TABS.map(tab => {
-              const isActive = activeTab === tab.id
-              return (
-                <motion.button key={tab.id} role="tab" aria-selected={isActive}
-                  onClick={() => setActiveTab(tab.id)}
-                  whileHover={{ scale: isActive ? 1 : 1.01 }} whileTap={{ scale: 0.98 }}
-                  className={`relative flex-1 flex items-center justify-center gap-2 px-3 py-3 rounded-xl text-sm font-medium transition-colors duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 ${isActive ? "text-white" : "text-[#6b8a99] hover:text-[#d1fae5]"}`}>
-                  {isActive && (
-                    <motion.div layoutId="activeTab"
-                      className="absolute inset-0 rounded-xl bg-[#0f1d24] border border-teal-800/25 animated-border tab-glow-enter"
-                      style={{ boxShadow: `0 0 24px ${tab.accent}12, 0 0 48px ${tab.accent}06` }}
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }} />
-                  )}
-                  <span className="relative z-10 flex items-center gap-2">
-                    <span style={{ color: isActive ? tab.accent : undefined }}>{tab.icon}</span>
-                    <span className="hidden sm:inline">{tab.label}</span>
-                    <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-md border leading-none ${isActive ? tab.badgeColor : "text-[#3b6b6b] bg-[#071115]/50 border-[#132d30]"}`}>{tab.badge}</span>
-                  </span>
-                </motion.button>
-              )
-            })}
-          </div>
-        </motion.nav>
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex gap-6">
+          {/* ── Main content area ── */}
+          <main className="flex-1 min-w-0">
+            {/* Mobile: horizontal scroll tabs (visible below lg) */}
+            <motion.nav initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.4 }} className="mb-6 lg:hidden" role="navigation" aria-label="Simulator tabs (mobile)">
+              <div className="flex gap-1.5 p-1.5 glass-card rounded-2xl overflow-x-auto" role="tablist">
+                {TABS.map(tab => {
+                  const isActive = activeTab === tab.id
+                  return (
+                    <motion.button key={tab.id} role="tab" aria-selected={isActive}
+                      onClick={() => setActiveTab(tab.id)}
+                      whileTap={{ scale: 0.98 }}
+                      className={`relative flex items-center gap-2 px-3 py-3 rounded-xl text-sm font-medium transition-colors duration-150 cursor-pointer whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 ${isActive ? "text-white" : "text-[#6b8a99] hover:text-[#d1fae5]"}`}>
+                      {isActive && (
+                        <motion.div layoutId="activeTabMobile"
+                          className="absolute inset-0 rounded-xl bg-[#0f1d24] border border-teal-800/25"
+                          style={{ boxShadow: `0 0 24px ${tab.accent}12, 0 0 48px ${tab.accent}06` }}
+                          transition={{ type: "spring", stiffness: 380, damping: 30 }} />
+                      )}
+                      <span className="relative z-10 flex items-center gap-2">
+                        <span style={{ color: isActive ? tab.accent : undefined }}>{tab.icon}</span>
+                        <span className="text-xs">{tab.label}</span>
+                      </span>
+                    </motion.button>
+                  )
+                })}
+              </div>
+            </motion.nav>
 
-        <AnimatePresence mode="wait">
-          <motion.div key={activeTab}
-            initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as const }}>
-            {activeTab === "amm" && <AMMSimulator />}
-            {activeTab === "stableswap" && <StableSwapSimulator />}
-            {activeTab === "mev" && <MEVSimulator />}
-            {activeTab === "flashloan" && <FlashLoanSimulator />}
-            {activeTab === "pendle" && <PendleSimulator />}
-            {activeTab === "apy" && <APYSimulator />}
-            {activeTab === "funding" && <FundingRateSimulator />}
-            {activeTab === "composability" && <ComposabilitySimulator />}
-          </motion.div>
-        </AnimatePresence>
-      </main>
+            <AnimatePresence mode="wait">
+              <motion.div key={activeTab}
+                initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
+                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as const }}>
+                {activeTab === "amm" && <AMMSimulator />}
+                {activeTab === "stableswap" && <StableSwapSimulator />}
+                {activeTab === "mev" && <MEVSimulator />}
+                {activeTab === "flashloan" && <FlashLoanSimulator />}
+                {activeTab === "pendle" && <PendleSimulator />}
+                {activeTab === "apy" && <APYSimulator />}
+                {activeTab === "funding" && <FundingRateSimulator />}
+                {activeTab === "deltaneutral" && <DeltaNeutralSimulator />}
+                {activeTab === "composability" && <ComposabilitySimulator />}
+              </motion.div>
+            </AnimatePresence>
+          </main>
+
+          {/* ── Collapsible right sidebar (desktop only) ── */}
+          <motion.aside
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5, duration: 0.4 }}
+            className="hidden lg:block relative flex-shrink-0"
+            aria-label="Simulator navigation"
+          >
+            <div className="sticky top-8">
+              {/* Toggle button */}
+              <button
+                onClick={() => setSidebarOpen(prev => !prev)}
+                aria-label={sidebarOpen ? "Collapse navigation sidebar" : "Expand navigation sidebar"}
+                className="absolute -left-3 top-6 z-20 w-6 h-6 rounded-full bg-[#0f1d24] border border-[#132d30] flex items-center justify-center text-[#6b8a99] hover:text-teal-400 hover:border-teal-800/40 transition-colors"
+              >
+                {sidebarOpen ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronLeft className="w-3.5 h-3.5" />}
+              </button>
+
+              <motion.div
+                animate={{ width: sidebarOpen ? 220 : 52 }}
+                transition={{ type: "spring", stiffness: 400, damping: 35 }}
+                className="overflow-hidden"
+              >
+                <nav className="glass-card rounded-2xl p-2 space-y-1" role="tablist" aria-label="Simulator tabs">
+                  {TABS.map(tab => {
+                    const isActive = activeTab === tab.id
+                    return (
+                      <motion.button
+                        key={tab.id}
+                        role="tab"
+                        aria-selected={isActive}
+                        onClick={() => setActiveTab(tab.id)}
+                        whileHover={{ scale: isActive ? 1 : 1.02 }}
+                        whileTap={{ scale: 0.97 }}
+                        className={`relative w-full flex items-center gap-3 rounded-xl transition-colors duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 ${
+                          sidebarOpen ? "px-3 py-2.5" : "px-0 py-2.5 justify-center"
+                        } ${isActive ? "text-white" : "text-[#6b8a99] hover:text-[#d1fae5]"}`}
+                      >
+                        {isActive && (
+                          <motion.div layoutId="activeTab"
+                            className="absolute inset-0 rounded-xl bg-[#0f1d24] border border-teal-800/25 animated-border tab-glow-enter"
+                            style={{ boxShadow: `0 0 24px ${tab.accent}12, 0 0 48px ${tab.accent}06` }}
+                            transition={{ type: "spring", stiffness: 380, damping: 30 }} />
+                        )}
+                        <span className="relative z-10 flex items-center gap-3 min-w-0">
+                          <span className="flex-shrink-0" style={{ color: isActive ? tab.accent : undefined }}>
+                            {tab.icon}
+                          </span>
+                          {sidebarOpen && (
+                            <motion.span
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              className="text-sm font-medium truncate"
+                            >
+                              {tab.label}
+                            </motion.span>
+                          )}
+                          {sidebarOpen && (
+                            <motion.span
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              className={`ml-auto text-[9px] font-bold px-1.5 py-0.5 rounded-md border leading-none flex-shrink-0 ${
+                                isActive ? tab.badgeColor : "text-[#3b6b6b] bg-[#071115]/50 border-[#132d30]"
+                              }`}
+                            >
+                              {tab.badge}
+                            </motion.span>
+                          )}
+                        </span>
+                      </motion.button>
+                    )
+                  })}
+                </nav>
+
+                {/* Active tab indicator label when collapsed */}
+                {!sidebarOpen && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="mt-3 text-center"
+                  >
+                    <span className="text-[9px] font-bold text-[#6b8a99] tracking-wider uppercase">
+                      {activeTabData.label.split(" ")[0]}
+                    </span>
+                  </motion.div>
+                )}
+              </motion.div>
+            </div>
+          </motion.aside>
+        </div>
+      </div>
 
       <footer className="border-t border-[#132d30] mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
