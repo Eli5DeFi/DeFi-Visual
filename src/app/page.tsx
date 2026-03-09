@@ -9,6 +9,7 @@ import PendleSimulator from "@/components/pendle/PendleSimulator"
 import APYSimulator from "@/components/apy/APYSimulator"
 import FundingRateSimulator from "@/components/funding/FundingRateSimulator"
 import ComposabilitySimulator from "@/components/composability/ComposabilitySimulator"
+import StableSwapSimulator from "@/components/stableswap/StableSwapSimulator"
 
 /* ── Tabs ── */
 const TABS = [
@@ -17,6 +18,14 @@ const TABS = [
     label: "AMMs & IL",
     icon: <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" strokeWidth="1.5"/><path d="M5 8.5C6 6 10 6 11 8.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>,
     badge: "CORE",
+    badgeColor: "text-teal-400 bg-teal-950/60 border-teal-900/50",
+    accent: "#14b8a6",
+  },
+  {
+    id: "stableswap",
+    label: "Curve StableSwap",
+    icon: <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none"><path d="M2 12C4 12 5 4 8 4S12 12 14 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="8" cy="4" r="1.5" fill="currentColor" opacity="0.4"/></svg>,
+    badge: "NEW",
     badgeColor: "text-teal-400 bg-teal-950/60 border-teal-900/50",
     accent: "#14b8a6",
   },
@@ -184,6 +193,7 @@ export default function Home() {
             exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as const }}>
             {activeTab === "amm" && <AMMSimulator />}
+            {activeTab === "stableswap" && <StableSwapSimulator />}
             {activeTab === "mev" && <MEVSimulator />}
             {activeTab === "flashloan" && <FlashLoanSimulator />}
             {activeTab === "pendle" && <PendleSimulator />}

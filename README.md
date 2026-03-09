@@ -11,6 +11,7 @@ Interactive DeFi education platform — learn how DeFi protocols actually work t
 | Simulator | What You'll Learn |
 |---|---|
 | **AMMs & Impermanent Loss** | Constant product formula (`x × y = k`), price impact, slippage, LP fee accrual, and how IL changes with price divergence |
+| **Curve StableSwap** | StableSwap invariant (`A·n^n·Σxᵢ + D = ...`), amplification coefficient A, Newton's method for swaps, bonding curve comparison (constant-sum vs constant-product vs StableSwap), multi-A overlay |
 | **MEV Sandwich Attacks** | How searcher bots extract value from the mempool — front-running, back-running, and profit optimization curves |
 | **Flash Loans** | Aave-style uncollateralized borrowing, arbitrage execution, gas cost analysis, and profit/loss calculations |
 | **Pendle PT/YT** | Yield tokenization — splitting yield-bearing assets into Principal Tokens and Yield Tokens, and how they converge at maturity |
@@ -51,6 +52,7 @@ src/
 │   └── globals.css           # Theme, animations, glass-card styles
 ├── components/
 │   ├── amm/                  # AMM simulator (pool viz, charts, swap panel)
+│   ├── stableswap/           # Curve StableSwap (bonding curve, multi-A, swap)
 │   ├── mev/                  # MEV simulator (mempool viz, profit chart)
 │   ├── flashloan/            # Flash loan simulator
 │   ├── pendle/               # Pendle PT/YT simulator
@@ -60,6 +62,7 @@ src/
 │   └── ui/                   # Shared UI primitives (Button, Slider, Tabs, Card)
 └── lib/
     ├── mathEngine.ts         # AMM math (constant product, IL, swap)
+    ├── stableSwapEngine.ts   # Curve StableSwap invariant, get_D, get_y (Newton's method)
     ├── mevEngine.ts          # Sandwich attack calculations
     ├── flashLoanEngine.ts    # Flash loan arbitrage math
     ├── pendleEngine.ts       # Yield tokenization math
