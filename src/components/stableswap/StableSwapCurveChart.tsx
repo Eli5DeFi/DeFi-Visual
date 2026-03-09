@@ -17,7 +17,7 @@ import {
   generateConstantProductCurve,
   generateConstantSumCurve,
 } from "@/lib/stableSwapEngine"
-import { CHART_MARGIN, CHART_GRID, CHART_AXIS, CHART_TICK, CHART_TOOLTIP_STYLE, CHART_LABEL } from "@/lib/constants"
+import { CHART_MARGIN, CHART_GRID, CHART_AXIS, CHART_TICK, CHART_TOOLTIP_STYLE, CHART_LABEL, THEME } from "@/lib/constants"
 
 interface StableSwapCurveChartProps {
   A: number
@@ -129,7 +129,7 @@ function StableSwapCurveChart({
             <Line
               type="monotone"
               dataKey="cs"
-              stroke="#f59e0b"
+              stroke={THEME.accent}
               strokeWidth={1.5}
               strokeDasharray="8 4"
               dot={false}
@@ -143,7 +143,7 @@ function StableSwapCurveChart({
             <Line
               type="monotone"
               dataKey="cp"
-              stroke="#f43f5e"
+              stroke={THEME.danger}
               strokeWidth={1.5}
               strokeDasharray="4 4"
               dot={false}
@@ -156,7 +156,7 @@ function StableSwapCurveChart({
           <Line
             type="monotone"
             dataKey="ss"
-            stroke="#14b8a6"
+            stroke={THEME.primary}
             strokeWidth={2.5}
             dot={false}
             isAnimationActive={true}
@@ -169,8 +169,8 @@ function StableSwapCurveChart({
             x={Math.round(currentX * 100) / 100}
             y={Math.round(currentY * 100) / 100}
             r={7}
-            fill="#22d3ee"
-            stroke="#071115"
+            fill={THEME.cyan}
+            stroke={THEME.card}
             strokeWidth={2}
           />
         </LineChart>

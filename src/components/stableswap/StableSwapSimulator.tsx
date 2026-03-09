@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useMemo, useCallback } from "react"
+import React, { useState, useMemo, useCallback, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Slider } from "@/components/ui/slider"
@@ -35,13 +35,18 @@ export default function StableSwapSimulator() {
   const [showAdvanced, setShowAdvanced] = useState(false)
   const [swapHistory, setSwapHistory] = useState<Array<{ direction: 0 | 1; amount: number; out: number; impact: number }>>([])
 
-  // Recompute pool when A or poolBalance changes
+  // Recompute pool when A, poolBalance, or feeRate changes
   const resetPool = useCallback(() => {
     const newPool = createStableSwapPool(poolBalance, A, feeRate)
     setPool(newPool)
     setInitialD(newPool.D)
     setSwapHistory([])
   }, [A, poolBalance, feeRate])
+
+  // Auto-reset pool when parameters change
+  useEffect(() => {
+    resetPool()
+  }, [resetPool])
 
   // Preview the current swap
   const preview = useMemo(() => {
@@ -171,13 +176,13 @@ export default function StableSwapSimulator() {
                   max={500}
                   min={1}
                   step={1}
-                  onValueChange={(val) => { setA(val[0]); resetPool() }}
+                  onValueChange={(val) => setA(val[0])}
                 />
                 <div className="flex gap-2">
                   {[1, 10, 100, 500].map((v) => (
                     <button
                       key={v}
-                      onClick={() => { setA(v); setTimeout(resetPool, 0) }}
+                      onClick={() => setA(v)}
                       aria-label={`Set A to ${v}`}
                       className={`flex-1 text-xs py-1.5 rounded-md transition-colors border ${
                         A === v
@@ -333,7 +338,7 @@ export default function StableSwapSimulator() {
                         max={10000}
                         min={10}
                         step={10}
-                        onValueChange={(val) => { setPoolBalance(val[0] * 1000); setTimeout(resetPool, 0) }}
+                        onValueChange={(val) => setPoolBalance(val[0] * 1000)}
                       />
                     </div>
                   </motion.div>

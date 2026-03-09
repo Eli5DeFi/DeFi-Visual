@@ -16,7 +16,7 @@ import {
   generateConstantProductCurve,
   generateConstantSumCurve,
 } from "@/lib/stableSwapEngine"
-import { CHART_MARGIN, CHART_GRID, CHART_AXIS, CHART_TICK, CHART_TOOLTIP_STYLE, CHART_LABEL } from "@/lib/constants"
+import { CHART_MARGIN, CHART_GRID, CHART_AXIS, CHART_TICK, CHART_TOOLTIP_STYLE, CHART_LABEL, THEME } from "@/lib/constants"
 
 const A_VALUES = [1, 5, 10, 50, 100, 500]
 const COLORS = ["#f43f5e", "#fb923c", "#f59e0b", "#22d3ee", "#14b8a6", "#a855f7"]
@@ -111,10 +111,10 @@ function MultiACurveChart({ D, currentA }: MultiACurveChartProps) {
           />
 
           {/* Constant sum */}
-          <Line type="monotone" dataKey="cs" stroke="#6b8a99" strokeWidth={1} strokeDasharray="8 4" dot={false} isAnimationActive={false} connectNulls />
+          <Line type="monotone" dataKey="cs" stroke={THEME.mutedFg} strokeWidth={1} strokeDasharray="8 4" dot={false} isAnimationActive={false} connectNulls />
 
           {/* Constant product */}
-          <Line type="monotone" dataKey="cp" stroke="#6b8a99" strokeWidth={1} strokeDasharray="4 4" dot={false} isAnimationActive={false} connectNulls />
+          <Line type="monotone" dataKey="cp" stroke={THEME.mutedFg} strokeWidth={1} strokeDasharray="4 4" dot={false} isAnimationActive={false} connectNulls />
 
           {/* StableSwap curves for each A */}
           {A_VALUES.map((a, i) => (

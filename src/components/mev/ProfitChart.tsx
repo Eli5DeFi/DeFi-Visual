@@ -11,7 +11,7 @@ import {
   Tooltip,
   ReferenceLine,
 } from "recharts"
-import { CHART_MARGIN, CHART_GRID, CHART_AXIS, CHART_TICK, CHART_TOOLTIP_STYLE, CHART_LABEL } from "@/lib/constants"
+import { CHART_MARGIN, CHART_GRID, CHART_AXIS, CHART_TICK, CHART_TOOLTIP_STYLE, CHART_LABEL, THEME } from "@/lib/constants"
 
 interface ProfitChartProps {
   data: Array<{ capital: number; profit: number }>
@@ -55,19 +55,19 @@ function ProfitChartInner({ data, currentCapital, optimalCapital }: ProfitChartP
         <Area
           type="monotone"
           dataKey="profit"
-          stroke="#14b8a6"
+          stroke={THEME.primary}
           fill="url(#profitGrad)"
           strokeWidth={2}
         />
         <ReferenceLine
           x={currentCapital}
-          stroke="#22d3ee"
+          stroke={THEME.cyan}
           strokeDasharray="4 4"
           label={{ value: "Current", fill: "#22d3ee", fontSize: 10, position: "top" }}
         />
         <ReferenceLine
           x={optimalCapital}
-          stroke="#f59e0b"
+          stroke={THEME.accent}
           strokeDasharray="4 4"
           label={{ value: "Optimal", fill: "#f59e0b", fontSize: 10, position: "top" }}
         />
